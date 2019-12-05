@@ -9,7 +9,7 @@
  */
 namespace Arikaim\Core\Validator;
 
-use Arikaim\Core\Interfaces\EventDispatcherInterface;
+use Arikaim\Core\Interfaces\Events\EventDispatcherInterface;
 use Arikaim\Core\Interfaces\SystemErrorInterface;
 use Arikaim\Core\Collection\Collection;
 use Arikaim\Core\Validator\Rule;
