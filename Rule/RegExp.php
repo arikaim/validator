@@ -3,11 +3,11 @@
  * Arikaim
  *
  * @link        http://www.arikaim.com
- * @copyright   Copyright (c)  Konstantin Atanasov <info@arikaim.com>
+ * @copyright   Copyright (c) Konstantin Atanasov <info@arikaim.com>
  * @license     http://www.arikaim.com/license
  * 
  */
-namespace Arikaim\Core\Form\Rule;
+namespace Arikaim\Core\Validator\Rule;
 
 use Arikaim\Core\Validator\Rule;
 
