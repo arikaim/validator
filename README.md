@@ -8,7 +8,7 @@
   * PHP 7.1
 
 
-#### Install
+#### Installation
 
 ```sh
 composer require arikaim/validator
