@@ -151,14 +151,12 @@ class Validator extends Collection
         if (is_string($filter) == true) {
             $filter = FilterBuilder::createFilter($fieldName,$filter);
         }
-
-        if ($filter instanceof Filter) {
-            if (array_key_exists($fieldName,$this->filters) == false) {
-                $this->filters[$fieldName] = [];
-            }    
-            array_push($this->filters[$fieldName],$filter);               
-            return true;
-        }           
+       
+        if (array_key_exists($fieldName,$this->filters) == false) {
+            $this->filters[$fieldName] = [];
+        }    
+        array_push($this->filters[$fieldName],$filter);                          
+                    
         return $this;
     }
     
@@ -173,15 +171,16 @@ class Validator extends Collection
         if ($data != null) {
             $this->data = $data;
         }
+      
         foreach ($this->data as $fieldName => $value) {     
-            $filters = $this->getFilters($fieldName); 
+            $filters = $this->getFilters($fieldName);            
             foreach ($filters as $filter) {
                 if (is_object($filter) == true) {
                     $this->data[$fieldName] = $filter->processFilter($this->data[$fieldName]);
                 }
             }                 
         }      
-
+      
         return $this;
     }
 
@@ -209,8 +208,7 @@ class Validator extends Collection
         $errors = 0;
         foreach ($rules as $rule) {    
             $valid = $this->validateRule($rule,$value);
-            if ($valid == false) {
-                // ['field_name' => $fieldName]
+            if ($valid == false) {              
                 $errorMessage = $this->resolveErrorMessage($rule,$fieldName);
                 $this->addError($fieldName,$errorMessage); 
                 $errors++;              

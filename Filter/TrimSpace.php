@@ -10,12 +10,11 @@
 namespace Arikaim\Core\Validator\Filter;
 
 use Arikaim\Core\Validator\Filter;
-use Arikaim\Core\Utils\Html;
 
 /**
- * SanitizeRequest filter
+ * TrimSpace filter
  */
-class Sanitize extends Filter
+class TrimSpace extends Filter
 {  
     /**
      * Filter value, return filtered value
@@ -24,11 +23,8 @@ class Sanitize extends Filter
      * @return mixed
      */
     public function filterValue($value) 
-    {            
-        $value = Html::removeTags($value,['script','iframe','style','embed','applet']);
-        $value = htmlspecialchars($value,ENT_HTML5 | ENT_QUOTES);
-       
-        return $value;
+    {       
+        return trim($value);
     } 
 
     /**

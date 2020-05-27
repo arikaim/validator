@@ -24,7 +24,7 @@ class FilterBuilder
      * @return Arikaim\Core\Interfaces\FilterInterface
      */
     public static function createFilter($class, $args = null)
-    {              
+    {                   
         return Factory::createInstance(Factory::getValidatorFiltersClass($class),$args);             
     }
 
@@ -37,6 +37,8 @@ class FilterBuilder
      */
     public static function __callStatic($name, $args)
     {  
+        $args = (empty($args) == true) ? [] : $args;
+
         return Self::createFilter(ucfirst($name),$args);       
     }
 
@@ -49,6 +51,8 @@ class FilterBuilder
      */
     public function __call($name, $args)
     {  
+        $args = (empty($args) == true) ? [] : $args;
+      
         return Self::createFilter(ucfirst($name),$args);       
     }
 }
