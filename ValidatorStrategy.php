@@ -13,6 +13,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\InvocationStrategyInterface;
 
+use Arikaim\Core\Interfaces\Events\EventDispatcherInterface;
+use Arikaim\Core\Interfaces\SystemErrorInterface;
+
 /**
  * Response validator strategy
  */
@@ -21,7 +24,7 @@ class ValidatorStrategy implements InvocationStrategyInterface
     /**
      * Events dispacher
      *
-     * @var EventDispatcherInterfaceype
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher; 
 
@@ -35,7 +38,8 @@ class ValidatorStrategy implements InvocationStrategyInterface
     /**
      * Constructor
      *
-     * @param EventDispatcherInterfaceype $eventDispatcher
+     * @param EventDispatcherInterface|null $eventDispatcher
+     * @param SystemErrorInterface|null $systemErrors
      */
     public function __construct($eventDispatcher = null, $systemErrors = null)
     {

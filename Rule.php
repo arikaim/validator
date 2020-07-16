@@ -136,7 +136,7 @@ abstract class Rule implements RuleInterface
             case Self::NUMBER_TYPE: {
                 return (is_numeric($value) == true);                   
             }
-            case Slf::ITEMS_ARRAY: {
+            case Self::ITEMS_ARRAY: {
                 return (is_array($value) == true);
             }
             default: {

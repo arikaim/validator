@@ -102,13 +102,14 @@ class RuleBuilder
     public function parseRuleParam($param)
     {
         $tokens = explode('=',$param);
-        $value = (isset($tokens[1]) == false) ? true : $tokens[1];
+        $name = $tokens[0];
+        $value = (isset($tokens[1]) == true) ? $tokens[1] : true;
 
-        if (count(explode(',',$value)) > 1) {
-            $value = Arrays::toArray($value,',');
+        if ($name != 'exp') {
+           $value = (count(explode(',',$value)) > 1) ? Arrays::toArray($value,',') : $value;
         }
-        
-        return ['name' => $tokens[0],'value' => $value];
+       
+        return ['name' => $name,'value' => $value];
     }
 
     /**

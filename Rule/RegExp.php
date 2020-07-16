@@ -12,20 +12,36 @@ namespace Arikaim\Core\Validator\Rule;
 use Arikaim\Core\Validator\Rule;
 
 /**
- * Reg exp validation rule
+ * Regexp validation rule
  */
-class RegExp extends Rule
+class Regexp extends Rule
 {   
     /**
      * Constructor
      *
+     * @param array $params
      */
-    public function __construct() 
+    public function __construct($params = []) 
     {
-        parent::__construct();
+        parent::__construct($params);
+
         $this->setError("REGEXP_NOT_VALID_ERROR");
     }
     
+    /**
+     * Validate regexp value 
+     *
+     * @param mixed $value
+     * @return boolean
+     */
+    public function validate($value) 
+    {
+        $exp = $this->params->get('exp');
+        $exp = (is_array($exp) == true) ? $exp[0] : $exp;
+           
+        return preg_match($exp,$value);
+    }
+
     /**
      * Return filter type
      *
@@ -33,6 +49,6 @@ class RegExp extends Rule
      */
     public function getType()
     {       
-        return FILTER_VALIDATE_REGEXP;
+        return FILTER_CALLBACK;
     }
 }

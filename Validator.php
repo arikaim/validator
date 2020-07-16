@@ -112,8 +112,7 @@ class Validator extends Collection
             if (array_key_exists($fieldName,$this->rules) == false) {
                 $this->rules[$fieldName] = [];
             }
-            array_push($this->rules[$fieldName],$rule);  
-            return $this;         
+            array_push($this->rules[$fieldName],$rule);                   
         } 
 
         return $this;
@@ -252,8 +251,7 @@ class Validator extends Collection
         }
 
         $type = $rule->getType();
-        $ruleOptions = ($type == FILTER_CALLBACK) ? ['options' => [$rule, 'validate']] : [];
-          
+        $ruleOptions = ($type == FILTER_CALLBACK) ? ['options' => [$rule, 'validate']] : [];          
         $result = filter_var($value,$type,$ruleOptions); 
 
         return $result;
