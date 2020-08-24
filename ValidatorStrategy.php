@@ -63,8 +63,8 @@ class ValidatorStrategy implements InvocationStrategyInterface
             $request = $request->withAttribute($k, $v);
         }
         $body = $request->getParsedBody();
-        $body = (is_array($body) == false) ? [] : $body;
-        $data = array_merge($routeArguments,$body);
+        $body = (\is_array($body) == false) ? [] : $body;
+        $data = \array_merge($routeArguments,$body);
         $validator = new Validator($data,$this->eventDispatcher,$this->systemErrors);
 
         return $callable($request, $response, $validator, $routeArguments);

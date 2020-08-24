@@ -10,7 +10,7 @@
 namespace Arikaim\Core\Validator\Rule;
 
 use Arikaim\Core\Validator\Rule;
-use Arikaim\Core\Utils\Utils;
+use Arikaim\Core\Utils\Uuid as UuidUtils;
 
 /**
  *  Uuid validation rule.Check if value is valid uuid.
@@ -24,6 +24,7 @@ class Uuid extends Rule
     public function __construct() 
     {
         parent::__construct();
+
         $this->setError("UUID_NOT_VALID_ERROR");  
     }
 
@@ -35,7 +36,7 @@ class Uuid extends Rule
      */
     public function validate($value) 
     {
-        return (Utils::isValidUUID($value) == false) ? false : true;          
+        return (UuidUtils::isValid($value) == false) ? false : true;          
     } 
 
     /**

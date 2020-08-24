@@ -23,6 +23,7 @@ class Email extends Rule
     public function __construct() 
     {
         parent::__construct([]);
+        
         $this->setError("EMAIL_NOT_VALID_ERROR");
     }
 

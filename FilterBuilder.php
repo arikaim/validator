@@ -53,6 +53,6 @@ class FilterBuilder
     {  
         $args = (empty($args) == true) ? [] : $args;
       
-        return Self::createFilter(ucfirst($name),$args);       
+        return Self::createFilter(\ucfirst($name),$args);       
     }
 }

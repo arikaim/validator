@@ -33,7 +33,7 @@ class File extends Rule
      */
     public function validate($value) 
     { 
-        if (is_array($value) == false) {
+        if (\is_array($value) == false) {
             return false;
         }
         if (isset($value['data']) == false) {

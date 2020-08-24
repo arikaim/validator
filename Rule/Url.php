@@ -23,6 +23,7 @@ class Url extends Rule
     public function __construct() 
     {
         parent::__construct();
+        
         $this->setError("URL_NOT_VALID_ERROR");  
     }
 

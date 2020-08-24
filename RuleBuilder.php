@@ -28,7 +28,7 @@ class RuleBuilder
         $rules = [];      
         foreach ($rules as $value) {
             $rule = $this->createRule($value);
-            array_push($rules,$rule);
+            \array_push($rules,$rule);
         }
 
         return $rules;
@@ -63,9 +63,9 @@ class RuleBuilder
     public function parseRuleDescriptor($descriptor)
     {
         $result = [];
-        $descriptor = trim($descriptor);
-        $tokens = explode(':',$descriptor);      
-        $result['class'] = ucfirst($tokens[0]);
+        $descriptor = \trim($descriptor);
+        $tokens = \explode(':',$descriptor);      
+        $result['class'] = \ucfirst($tokens[0]);
 
         $params = (isset($tokens[1]) == true) ? $tokens[1] : '';
         $result['params'] = $this->parseRuleParams($params);
@@ -83,7 +83,7 @@ class RuleBuilder
     public function parseRuleParams($params)
     {
         $result = [];
-        $tokens = explode('|',$params);
+        $tokens = \explode('|',$params);
         foreach ($tokens as $value) {
             $param = $this->parseRuleParam($value);
             $result[$param['name']] = $param['value'];      
@@ -101,12 +101,12 @@ class RuleBuilder
      */
     public function parseRuleParam($param)
     {
-        $tokens = explode('=',$param);
+        $tokens = \explode('=',$param);
         $name = $tokens[0];
         $value = (isset($tokens[1]) == true) ? $tokens[1] : true;
 
         if ($name != 'exp') {
-           $value = (count(explode(',',$value)) > 1) ? Arrays::toArray($value,',') : $value;
+           $value = (\count(\explode(',',$value)) > 1) ? Arrays::toArray($value,',') : $value;
         }
        
         return ['name' => $name,'value' => $value];

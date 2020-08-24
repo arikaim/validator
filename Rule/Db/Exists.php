@@ -24,6 +24,7 @@ class Exists extends DbRule
     public function __construct($params) 
     {
         parent::__construct($params);
+
         $this->setError("VALUE_NOT_EXIST_ERROR");
     }
 
@@ -35,7 +36,7 @@ class Exists extends DbRule
      */
     public function validate($value) 
     {           
-        if (is_object($this->model) == false) {
+        if (\is_object($this->model) == false) {
             return false;
         }
         

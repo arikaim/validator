@@ -10,6 +10,7 @@
 namespace Arikaim\Core\Validator\Rule;
 
 use Arikaim\Core\Validator\Rule\Number;
+use Arikaim\Core\Validator\Rule;
 
 /**
  * Integer rule validation

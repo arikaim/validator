@@ -119,25 +119,25 @@ abstract class Rule implements RuleInterface
     {
         switch ($type) {
             case Self::INTEGER_TYPE: {        
-                if (is_numeric($value) == true) {                                   
-                    return (is_int((int)$value) == true);
+                if (\is_numeric($value) == true) {                                   
+                    return (\is_int((int)$value) == true);
                 }
                 break;
             }
             case Self::STRING_TYPE: {
-                return (is_string($value) == true);             
+                return (\is_string($value) == true);             
             }
             case Self::FLOAT_TYPE: {
-                if (is_numeric($value) == true) {                  
-                    return (is_float((float)$value) == true);
+                if (\is_numeric($value) == true) {                  
+                    return (\is_float((float)$value) == true);
                 }
                 break;
             }
             case Self::NUMBER_TYPE: {
-                return (is_numeric($value) == true);                   
+                return (\is_numeric($value) == true);                   
             }
             case Self::ITEMS_ARRAY: {
-                return (is_array($value) == true);
+                return (\is_array($value) == true);
             }
             default: {
                 return true;
@@ -165,7 +165,7 @@ abstract class Rule implements RuleInterface
      */
     public function getErrorParams()
     {
-        return array_merge($this->errorParams,$this->params->toArray());   
+        return \array_merge($this->errorParams,$this->params->toArray());   
     }
 
     /**

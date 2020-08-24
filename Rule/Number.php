@@ -77,6 +77,7 @@ class Number extends Rule
         if (empty($this->params->get('min')) == false) {                 
             return ($value < $this->params['min']) ? false : true; 
         }
+
         return true;
     }
 
@@ -91,6 +92,7 @@ class Number extends Rule
         if (empty($this->params->get('max')) == false) {           
             return ($value > $this->params['max']) ? false : true;                
         }
+        
         return true;
     }
 }

@@ -37,9 +37,9 @@ class Regexp extends Rule
     public function validate($value) 
     {
         $exp = $this->params->get('exp');
-        $exp = (is_array($exp) == true) ? $exp[0] : $exp;
+        $exp = (\is_array($exp) == true) ? $exp[0] : $exp;
            
-        return preg_match($exp,$value);
+        return \preg_match($exp,$value);
     }
 
     /**

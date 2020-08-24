@@ -38,7 +38,7 @@ class HtmlTags extends Rule
     {      
         $tags = $this->params->get('tags',null);
      
-        return ($value == strip_tags($value,$tags));
+        return ($value == \strip_tags($value,$tags));
     } 
 
     /**

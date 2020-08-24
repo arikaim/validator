@@ -41,14 +41,14 @@ class Text extends Rule
         $max = $this->params->get('max',null);
 
         if (empty($min) == false) {           
-            if (strlen((string)$value) < $min) {
+            if (\strlen((string)$value) < $min) {
                 $this->setError("TEXT_MIN_LENGHT_ERROR");
                 $errors++;
             }
         }
 
         if (empty($max) == false) {   
-            if (strlen((string)$value) > $max) {
+            if (\strlen((string)$value) > $max) {
                 $this->setError("TEXT_MAX_LENGHT_ERROR");
                 $errors++;
             }

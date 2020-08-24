@@ -25,6 +25,7 @@ class TemplatePath extends Rule
     public function __construct() 
     {
         parent::__construct();
+        
         $this->setError("TEMPLATE_NOT_EXISTS");
     }
 

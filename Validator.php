@@ -104,15 +104,15 @@ class Validator extends Collection
      */
     public function addRule($rule, $fieldName = null, $error = null) 
     {                
-        if (is_string($rule) == true) {
+        if (\is_string($rule) == true) {
             $rule = $this->rule()->createRule($rule,$error);
         }
-        if (is_object($rule) == true) {      
+        if (\is_object($rule) == true) {      
             $fieldName = (empty($fieldName) == true) ? $rule->getFieldName() : $fieldName;
-            if (array_key_exists($fieldName,$this->rules) == false) {
+            if (\array_key_exists($fieldName,$this->rules) == false) {
                 $this->rules[$fieldName] = [];
             }
-            array_push($this->rules[$fieldName],$rule);                   
+            \array_push($this->rules[$fieldName],$rule);                   
         } 
 
         return $this;
@@ -147,14 +147,14 @@ class Validator extends Collection
      */
     public function addFilter($fieldName, Filter $filter) 
     {                   
-        if (is_string($filter) == true) {
+        if (\is_string($filter) == true) {
             $filter = FilterBuilder::createFilter($fieldName,$filter);
         }
        
-        if (array_key_exists($fieldName,$this->filters) == false) {
+        if (\array_key_exists($fieldName,$this->filters) == false) {
             $this->filters[$fieldName] = [];
         }    
-        array_push($this->filters[$fieldName],$filter);                          
+        \array_push($this->filters[$fieldName],$filter);                          
                     
         return $this;
     }
@@ -174,7 +174,7 @@ class Validator extends Collection
         foreach ($this->data as $fieldName => $value) {     
             $filters = $this->getFilters($fieldName);            
             foreach ($filters as $filter) {
-                if (is_object($filter) == true) {
+                if (\is_object($filter) == true) {
                     $this->data[$fieldName] = $filter->processFilter($this->data[$fieldName]);
                 }
             }                 
@@ -226,7 +226,7 @@ class Validator extends Collection
     public function resolveErrorMessage($rule, $fieldName) 
     {
         $errorCode = $rule->getError();
-        if (is_object($this->systemErrors) == false) {
+        if (\is_object($this->systemErrors) == false) {
             return $errorCode;
         }  
         $params = $rule->getErrorParams();
@@ -252,7 +252,7 @@ class Validator extends Collection
 
         $type = $rule->getType();
         $ruleOptions = ($type == FILTER_CALLBACK) ? ['options' => [$rule, 'validate']] : [];          
-        $result = filter_var($value,$type,$ruleOptions); 
+        $result = \filter_var($value,$type,$ruleOptions); 
 
         return $result;
     }
@@ -267,7 +267,7 @@ class Validator extends Collection
     public function validate($data = null, $rules = null)
     {
         $this->errors = [];
-        if (is_array($data) == true) {
+        if (\is_array($data) == true) {
             $this->data = $data;
         }
         
@@ -282,7 +282,7 @@ class Validator extends Collection
         $valid = $this->isValid();
         if ($valid == true) {
             // run events callback
-            if (is_object($this->eventDispatcher) == true) {
+            if (\is_object($this->eventDispatcher) == true) {
                 $this->eventDispatcher->dispatch('validator.valid',$this->data,true);
             }
           
@@ -291,7 +291,7 @@ class Validator extends Collection
             }          
         } else {
             // run events callback
-            if (is_object($this->eventDispatcher) == true) {
+            if (\is_object($this->eventDispatcher) == true) {
                 $this->eventDispatcher->dispatch('validator.error',$this->getErrors(),true);
             }
             if (empty($this->onFail) == false) {               
@@ -350,7 +350,7 @@ class Validator extends Collection
             'field_name' => $fieldName,
             'message'    => $message
         ];
-        array_push($this->errors,$error);
+        \array_push($this->errors,$error);
     }
 
     /**
@@ -362,8 +362,8 @@ class Validator extends Collection
      */
     public static function sanitizeVariable($value, $type = FILTER_SANITIZE_STRING) 
     {
-        $value = trim($value);
-        $value = filter_var($value,$type);
+        $value = \trim($value);
+        $value = \filter_var($value,$type);
 
         return $value;
     }
@@ -395,7 +395,7 @@ class Validator extends Collection
      */
     public function getErrorsCount()
     {
-        return count($this->errors);
+        return \count($this->errors);
     }
 
     /**
@@ -419,6 +419,6 @@ class Validator extends Collection
     {   
         $all = (isset($this->filters['*']) == true) ? $this->filters['*'] : [];
 
-        return (isset($this->filters[$fieldName]) == true) ? array_merge($all,$this->filters[$fieldName]) : $all;          
+        return (isset($this->filters[$fieldName]) == true) ? \array_merge($all,$this->filters[$fieldName]) : $all;          
     }
 }

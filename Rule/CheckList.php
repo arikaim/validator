@@ -35,7 +35,7 @@ class CheckList extends Rule
     public function validate($value) 
     {
         $items = $this->params->get('items',[]);
-        if (in_array($value,$items,false) == false) {        
+        if (\in_array($value,$items,false) == false) {        
             $this->setErrorParams($items);  
             return false;         
         } 
