@@ -25,7 +25,7 @@ class Text extends Rule
     {
         parent::__construct($params);
 
-        $this->setError("TEXT_NOT_VALID_ERROR");
+        $this->setError('TEXT_NOT_VALID_ERROR');
     }
 
     /**
@@ -42,14 +42,14 @@ class Text extends Rule
 
         if (empty($min) == false) {           
             if (\strlen((string)$value) < $min) {
-                $this->setError("TEXT_MIN_LENGHT_ERROR");
+                $this->setError('TEXT_MIN_LENGHT_ERROR');
                 $errors++;
             }
         }
 
         if (empty($max) == false) {   
             if (\strlen((string)$value) > $max) {
-                $this->setError("TEXT_MAX_LENGHT_ERROR");
+                $this->setError('TEXT_MAX_LENGHT_ERROR');
                 $errors++;
             }
         }

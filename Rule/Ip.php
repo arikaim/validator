@@ -24,7 +24,7 @@ class Ip extends Rule
     {
         parent::__construct([]);
         
-        $this->setError("INT_NOT_VALID_ERROR");
+        $this->setError('INT_NOT_VALID_ERROR');
     }
 
     /**

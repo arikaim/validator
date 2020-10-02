@@ -20,7 +20,7 @@ class DbRule extends Rule
     /**
      * Model
      *
-     * @var Model
+     * @var object
      */
     protected $model;
 

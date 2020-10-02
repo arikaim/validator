@@ -25,7 +25,7 @@ class HtmlTags extends Rule
     {
         parent::__construct($params);
 
-        $this->setError("TEXT_NOT_VALID_ERROR");
+        $this->setError('TEXT_NOT_VALID_ERROR');
     }
 
     /**

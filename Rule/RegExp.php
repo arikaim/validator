@@ -25,7 +25,7 @@ class Regexp extends Rule
     {
         parent::__construct($params);
 
-        $this->setError("REGEXP_NOT_VALID_ERROR");
+        $this->setError('REGEXP_NOT_VALID_ERROR');
     }
     
     /**

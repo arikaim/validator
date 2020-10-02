@@ -26,7 +26,7 @@ class ExtensionPath extends Rule
     {
         parent::__construct([]);
 
-        $this->setError("EXTENSION_NOT_EXISTS");
+        $this->setError('EXTENSION_NOT_EXISTS');
     }
 
     /**

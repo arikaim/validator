@@ -27,7 +27,7 @@ class Csrf extends Rule
         parent::__construct($params);
         
         $this->required();
-        $this->setError("ACCESS_DENIED");
+        $this->setError('ACCESS_DENIED');
     }
 
     /**

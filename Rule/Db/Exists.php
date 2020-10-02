@@ -25,7 +25,7 @@ class Exists extends DbRule
     {
         parent::__construct($params);
 
-        $this->setError("VALUE_NOT_EXIST_ERROR");
+        $this->setError('VALUE_NOT_EXIST_ERROR');
     }
 
     /**

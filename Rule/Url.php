@@ -24,7 +24,7 @@ class Url extends Rule
     {
         parent::__construct();
         
-        $this->setError("URL_NOT_VALID_ERROR");  
+        $this->setError('URL_NOT_VALID_ERROR');  
     }
 
     /**

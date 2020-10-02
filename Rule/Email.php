@@ -24,7 +24,7 @@ class Email extends Rule
     {
         parent::__construct([]);
         
-        $this->setError("EMAIL_NOT_VALID_ERROR");
+        $this->setError('EMAIL_NOT_VALID_ERROR');
     }
 
     /**

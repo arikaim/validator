@@ -71,7 +71,7 @@ abstract class Rule implements RuleInterface
      */
     public function __construct($params = [], $error = null) 
     {
-        $error = (empty($error) == false) ? $error : "NOT_VALID_VALUE_ERROR";
+        $error = (empty($error) == false) ? $error : 'NOT_VALID_VALUE_ERROR';
         $this->params = new Collection($params);  
         $this->errorParams = [];
         $this->setError($error);

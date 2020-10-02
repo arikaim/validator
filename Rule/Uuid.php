@@ -25,7 +25,7 @@ class Uuid extends Rule
     {
         parent::__construct();
 
-        $this->setError("UUID_NOT_VALID_ERROR");  
+        $this->setError('UUID_NOT_VALID_ERROR');  
     }
 
     /**

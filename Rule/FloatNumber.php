@@ -26,7 +26,7 @@ class FloatNumber extends Number
     {
         parent::__construct($params);
 
-        $this->setError("FLOAT_NOT_VALID_ERROR");
+        $this->setError('FLOAT_NOT_VALID_ERROR');
     }
 
     /**
@@ -40,17 +40,17 @@ class FloatNumber extends Number
         $errors = 0;
         $result = $this->validateType($value,Rule::FLOAT_TYPE);
         if ($result == false) {
-            $this->setError("FLOAT_NOT_VALID_ERROR");
+            $this->setError('FLOAT_NOT_VALID_ERROR');
             $errors++;
         } 
         $result = $this->validateMinValue($value);
         if ($result == false) {
-            $this->setError("NUMBER_MIN_VALUE_ERROR");
+            $this->setError('NUMBER_MIN_VALUE_ERROR');
             $errors++;
         }   
         $result = $this->validateMaxValue($value);
         if ($result == false) {
-            $this->setError("NUMBER_MAX_VALUE_ERROR");
+            $this->setError('NUMBER_MAX_VALUE_ERROR');
             $errors++;
         }
         

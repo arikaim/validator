@@ -25,7 +25,7 @@ class Unique extends DbRule
     {
         parent::__construct($params);
         
-        $this->setError("VALUE_EXIST_ERROR");  
+        $this->setError('VALUE_EXIST_ERROR');  
     }
 
     /**
