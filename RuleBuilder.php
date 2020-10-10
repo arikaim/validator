@@ -46,7 +46,8 @@ class RuleBuilder
     {
         $data = $this->parseRuleDescriptor($descriptor);
         $rule = Factory::createRule($data['class'],[$data['params']]);
-        if (empty($error) == false) {
+
+        if (empty($error) == false && \is_object($rule) == true) {
             $rule->setError($error);          
         }
 

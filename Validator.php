@@ -271,7 +271,7 @@ class Validator extends Collection
             $this->data = $data;
         }
         
-        if (is_callable($this->callback) == true) {
+        if (\is_callable($this->callback) == true) {
             $this->callback($this->data);
         }
           
