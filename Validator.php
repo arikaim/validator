@@ -9,12 +9,11 @@
  */
 namespace Arikaim\Core\Validator;
 
-use Arikaim\Core\Interfaces\Events\EventDispatcherInterface;
-use Arikaim\Core\Interfaces\SystemErrorInterface;
 use Arikaim\Core\Collection\Collection;
 use Arikaim\Core\Validator\Rule;
 use Arikaim\Core\Validator\FilterBuilder;
 use Arikaim\Core\Validator\RuleBuilder;
+use Closure;
 
 /**
  * Data validation
@@ -43,54 +42,85 @@ class Validator extends Collection
     private $errors;
 
     /**
-     * Callback for valid event
+     * On valid callback
      *
-     * @var \Closure
+     * @var Closure|null
      */
-    private $onValid = null;
+    private $onValidCallback = null;
 
     /**
-     * Callback for validation fail event
+     * On error callback
      *
-     * @var \Closure
+     * @var Closure|null
      */
-    private $onFail = null;
+    private $onErrorCallback = null;
 
     /**
-     * Validate callback
+     * Get valida callback
      *
-     * @var \Closure
-     */
-    private $callback;
-
+     * @var Closure|null
+    */
+    private $getValidCallback;
+    
     /**
-     * Event Dispatcher
+     * Get error callback
      *
-     * @var EventDispatcherInterface
+     * @var Closure|null
      */
-    private $eventDispatcher;
-
-    /**
-     * System errors
-     *
-     * @var SystemErrorInterface
-     */
-    private $systemErrors;
+    private $getErrorCallback;
 
     /**
      * Constructor
      * 
      * @param array $data
      */
-    public function __construct($data = [], EventDispatcherInterface $eventDispatcher = null, SystemErrorInterface $systemErrors = null) 
+    public function __construct($data = [], Closure $getValidCallback = null, Closure $getErrorCallback = null) 
     {
         parent::__construct($data);
         
         $this->rules = [];
         $this->errors = [];
         $this->filters = [];
-        $this->eventDispatcher = $eventDispatcher;
-        $this->systemErrors = $systemErrors;
+        $this->getValidCallback = $getValidCallback;
+        $this->getErrorCallback = $getErrorCallback;
+    }
+
+    /**
+     * Init callback
+     *
+     * @return void
+     */
+    protected function initCallback()
+    {
+        if (empty($this->onValidCallback) == true) {
+            $this->onValidCallback = ($this->getValidCallback instanceof Closure) ? ($this->getValidCallback)() : null;
+        }
+
+        if (empty($this->onErrorCallback) == true) {
+            $this->onErrorCallback = ($this->getErrorCallback instanceof Closure) ? ($this->getErrorCallback)() : null;
+        }
+    }
+
+    /**
+     * Set callback for validation done
+     *
+     * @param \Closure $callback
+     * @return void
+    */
+    public function onValid(Closure $callback)
+    {
+        $this->onValidCallback = $callback; 
+    }
+
+    /**
+     * Set callback for error valdation
+     *
+     * @param \Closure $callback
+     * @return void
+    */
+    public function onError(Closure $callback)
+    {
+        $this->onErrorCallback = $callback; 
     }
 
     /**
@@ -207,34 +237,15 @@ class Validator extends Collection
         $errors = 0;
         foreach ($rules as $rule) {    
             $valid = $this->validateRule($rule,$value);
-            if ($valid == false) {              
-                $errorMessage = $this->resolveErrorMessage($rule,$fieldName);
-                $this->addError($fieldName,$errorMessage); 
+            if ($valid == false) { 
+                $errorCode = $rule->getError();
+                $params = $rule->getErrorParams();               
+                $this->addError($fieldName,$errorCode,$params); 
                 $errors++;              
             }
         }
 
         return ($errors == 0);
-    }
-
-    /**
-     * Return error message
-     *
-     * @param Rule $rule
-     * @return string $fieldName
-     */
-    public function resolveErrorMessage($rule, $fieldName) 
-    {
-        $errorCode = $rule->getError();
-        if (\is_object($this->systemErrors) == false) {
-            return $errorCode;
-        }  
-        $params = $rule->getErrorParams();
-        $params['field_name'] = $fieldName;
-
-        $errorMessage = $this->systemErrors->getError($errorCode,$params,null);
-
-        return (empty($errorMessage) == true) ? $errorCode : $errorMessage;              
     }
 
     /**
@@ -270,85 +281,43 @@ class Validator extends Collection
         if (\is_array($data) == true) {
             $this->data = $data;
         }
-        
-        if (\is_callable($this->callback) == true) {
-            $this->callback($this->data);
-        }
-          
+           
+        $this->initCallback();
+
         foreach ($this->rules as $fieldName => $rules) {  
             $this->validateRules($fieldName,$rules);
         }
-
-        $valid = $this->isValid();
-        if ($valid == true) {
-            // run events callback
-            if (\is_object($this->eventDispatcher) == true) {
-                $this->eventDispatcher->dispatch('validator.valid',$this->data,true);
-            }
-          
-            if (empty($this->onValid) == false) {
-                $this->onValid->call($this,$this->data);
-            }          
-        } else {
-            // run events callback
-            if (\is_object($this->eventDispatcher) == true) {
-                $this->eventDispatcher->dispatch('validator.error',$this->getErrors(),true);
-            }
-            if (empty($this->onFail) == false) {               
-                $this->onFail->call($this,$this->getErrors());
-            }           
+       
+        if ($this->isValid() == true) {
+            // run data valid callback
+            if ($this->onErrorCallback instanceof Closure) {
+                ($this->onValidCallback)($this);  
+            }  
+            return true;
         }
 
-        return $valid;   
-    }
-
-    /**
-     * Set validator callback
-     *
-     * @param \Closure $callback
-     * @return void
-     */
-    public function validatorCallback(\Closure $callback)
-    {
-        $this->callback = function() use($callback) {
-            $callback($this->data);
-        };
-    }
-
-    /**
-     * Callback for not valid data
-     *
-     * @param \Closure $callback
-     * @return void
-     */
-    public function onFail(\Closure $callback)
-    {
-        $this->onFail = $callback;
-    }
-
-    /**
-     * Callback for valid data
-     *
-     * @param \Closure $callback
-     * @return void
-     */
-    public function onValid(\Closure $callback)
-    {
-        $this->onValid = $callback;
+        // run error callback       
+        if ($this->onErrorCallback instanceof Closure) {
+            ($this->onErrorCallback)($this->getErrors()); 
+        }                      
+        
+        return false;   
     }
 
     /**
      * Set validation error
      *
      * @param string $fieldName
-     * @param string $message
+     * @param string $errorCode
+     * @param array $params
      * @return void
      */
-    public function addError($fieldName, $message)
+    public function addError($fieldName, $errorCode, array $params = [])
     {
         $error = [
             'field_name' => $fieldName,
-            'message'    => $message
+            'error_code' => $errorCode,
+            'params'     => $params
         ];
         \array_push($this->errors,$error);
     }
@@ -361,11 +330,8 @@ class Validator extends Collection
      * @return void
      */
     public static function sanitizeVariable($value, $type = FILTER_SANITIZE_STRING) 
-    {
-        $value = \trim($value);
-        $value = \filter_var($value,$type);
-
-        return $value;
+    {     
+        return \filter_var(\trim($value),$type);       
     }
 
     /**
@@ -375,7 +341,7 @@ class Validator extends Collection
      */
     public function isValid()
     {
-        return ($this->getErrorsCount() > 0) ? false : true;          
+        return ($this->getErrorsCount() == 0);     
     }
 
     /**

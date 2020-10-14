@@ -13,38 +13,18 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\InvocationStrategyInterface;
 
-use Arikaim\Core\Interfaces\Events\EventDispatcherInterface;
-use Arikaim\Core\Interfaces\SystemErrorInterface;
-
 /**
  * Response validator strategy
  */
 class ValidatorStrategy implements InvocationStrategyInterface
 {
     /**
-     * Events dispacher
-     *
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher; 
-
-    /**
-     * System Errors
-     *
-     * @var SystemErrorInterface
-     */
-    private $systemErrors;
-
-    /**
      * Constructor
      *
-     * @param EventDispatcherInterface|null $eventDispatcher
-     * @param SystemErrorInterface|null $systemErrors
+     * @param array $systemErrors
      */
-    public function __construct($eventDispatcher = null, $systemErrors = null)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->systemErrors = $systemErrors;
+    public function __construct()
+    {             
     }
 
     /**
@@ -54,18 +34,27 @@ class ValidatorStrategy implements InvocationStrategyInterface
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
      * @param array                  $routeArguments
-     *
      * @return mixed
-     */
+    */
     public function __invoke(callable $callable, ServerRequestInterface $request, ResponseInterface $response, array $routeArguments): ResponseInterface  
     {
-        foreach ($routeArguments as $k => $v) {          
-            $request = $request->withAttribute($k, $v);
+        foreach ($routeArguments as $key => $value) {          
+            $request = $request->withAttribute($key, $value);
         }
         $body = $request->getParsedBody();
         $body = (\is_array($body) == false) ? [] : $body;
         $data = \array_merge($routeArguments,$body);
-        $validator = new Validator($data,$this->eventDispatcher,$this->systemErrors);
+        $controller = $callable[0];
+
+        $onValid = function() use ($controller) {
+            return $controller->getDataValidCallback();
+        };
+
+        $onError = function() use($controller) {
+            return $controller->getValidationErrorCallback();
+        };
+        
+        $validator = new Validator($data,$onValid,$onError);
 
         return $callable($request,$response,$validator,$routeArguments);
     }
