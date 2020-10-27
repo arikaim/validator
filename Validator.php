@@ -387,4 +387,31 @@ class Validator extends Collection
 
         return (isset($this->filters[$fieldName]) == true) ? \array_merge($all,$this->filters[$fieldName]) : $all;          
     }
+
+    /**
+     * Get value from collection
+     *
+     * @param string $key Name
+     * @param mixed $default If key not exists return default value
+     * @return mixed
+     */
+    public function get($key, $default = null)
+    {       
+        $item = $this->data[$key] ?? $default;
+
+        return (\is_array($item) == true) ? $item : \trim($item);           
+    }
+
+    /**
+     * Get item 
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function offsetGet($key) 
+    {
+        $item = $this->data[$key] ?? null;
+
+        return (\is_array($item) == true) ? $item : \trim($item);
+    }
 }

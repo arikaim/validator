@@ -37,7 +37,7 @@ class FilterBuilder
      */
     public static function __callStatic($name, $args)
     {  
-        $args = (empty($args) == true) ? [] : $args;
+        $args = $args ?? [];
 
         return Self::createFilter(ucfirst($name),$args);       
     }
@@ -51,7 +51,7 @@ class FilterBuilder
      */
     public function __call($name, $args)
     {  
-        $args = (empty($args) == true) ? [] : $args;
+        $args = $args ?? [];
       
         return Self::createFilter(\ucfirst($name),$args);       
     }

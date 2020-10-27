@@ -71,7 +71,7 @@ abstract class Rule implements RuleInterface
      */
     public function __construct($params = [], $error = null) 
     {
-        $error = (empty($error) == false) ? $error : 'NOT_VALID_VALUE_ERROR';
+        $error = $error ?? 'NOT_VALID_VALUE_ERROR';
         $this->params = new Collection($params);  
         $this->errorParams = [];
         $this->setError($error);
@@ -120,24 +120,24 @@ abstract class Rule implements RuleInterface
         switch ($type) {
             case Self::INTEGER_TYPE: {        
                 if (\is_numeric($value) == true) {                                   
-                    return (\is_int((int)$value) == true);
+                    return \is_int((int)$value);
                 }
                 break;
             }
             case Self::STRING_TYPE: {
-                return (\is_string($value) == true);             
+                return \is_string($value);         
             }
             case Self::FLOAT_TYPE: {
                 if (\is_numeric($value) == true) {                  
-                    return (\is_float((float)$value) == true);
+                    return \is_float((float)$value);
                 }
                 break;
             }
             case Self::NUMBER_TYPE: {
-                return (\is_numeric($value) == true);                   
+                return \is_numeric($value);              
             }
             case Self::ITEMS_ARRAY: {
-                return (\is_array($value) == true);
+                return \is_array($value);
             }
             default: {
                 return true;
