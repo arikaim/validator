@@ -20,12 +20,14 @@ class Uuid extends Rule
     /**
      * Constructor
      *
+     * @param array $params 
+     * @param string|null $error 
      */
-    public function __construct() 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct();
+        parent::__construct($params,$error);
 
-        $this->setError('UUID_NOT_VALID_ERROR');  
+        $this->setDefaultError('UUID_NOT_VALID_ERROR');  
     }
 
     /**
@@ -34,15 +36,15 @@ class Uuid extends Rule
      * @param string $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
-        return (UuidUtils::isValid($value) == false) ? false : true;          
+        return UuidUtils::isValid($value);         
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

@@ -19,22 +19,23 @@ class Text extends Rule
     /**
      * Constructor
      *
-     * @param array $params
+     * @param array $params 
+     * @param string|null $error 
      */
-    public function __construct($params = []) 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
 
-        $this->setError('TEXT_NOT_VALID_ERROR');
+        $this->setDefaultError('TEXT_NOT_VALID_ERROR');
     }
 
     /**
      * Verify if value is valid
      *
-     * @param string $value
+     * @param mixed $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
         $errors = 0;
         $min = $this->params->get('min',null);      
@@ -54,13 +55,13 @@ class Text extends Rule
             }
         }
         
-        return ($errors > 0) ? false : true;
+        return ($errors == 0);
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

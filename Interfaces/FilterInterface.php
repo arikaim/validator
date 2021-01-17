@@ -17,7 +17,7 @@ interface FilterInterface
     /**
      * Get filter type 
      *
-     * @return integer
+     * @return mixed
      */
     public function getType(); 
 

@@ -19,18 +19,20 @@ class Email extends Rule
     /**
      * Constructor
      *
-     */
-    public function __construct() 
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct([]);
+        parent::__construct($params,$error);
         
-        $this->setError('EMAIL_NOT_VALID_ERROR');
+        $this->setDefaultError('EMAIL_NOT_VALID_ERROR');
     }
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

@@ -21,12 +21,12 @@ abstract class Filter implements FilterInterface
      *
      * @var array
      */
-    protected $params; 
+    protected $params = []; 
     
     /**
      * Should return filter type
      *
-     * @return integer
+     * @return mixed
      */
     abstract public function getType();
     
@@ -35,13 +35,13 @@ abstract class Filter implements FilterInterface
      *
      * @param array $params
      */
-    public function __construct($params = []) 
+    public function __construct(array $params = []) 
     {      
         $this->params = $params;
     }
 
     /**
-     * Callback  run if filter type is FILTER_CALLBACK
+     * Callback run if filter type is FILTER_CALLBACK
      *
      * @param mixed $value
      * @return mixed

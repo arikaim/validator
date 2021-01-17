@@ -18,12 +18,13 @@ class Equal extends Rule
 {    
     /**
      * Constructor
-     * params - value
-     * @param array $params
-     */
-    public function __construct($params) 
+     *
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
     }
 
     /**
@@ -32,15 +33,15 @@ class Equal extends Rule
      * @param mixed $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     { 
-        return ($value != $this->params->get('value')) ? false : true;
+        return ($value == $this->params->get('value'));
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

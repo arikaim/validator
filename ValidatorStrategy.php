@@ -21,7 +21,6 @@ class ValidatorStrategy implements InvocationStrategyInterface
     /**
      * Constructor
      *
-     * @param array $systemErrors
      */
     public function __construct()
     {             
@@ -49,7 +48,7 @@ class ValidatorStrategy implements InvocationStrategyInterface
         $onValid = function() use ($controller) {
             return $controller->getDataValidCallback();
         };
-
+    
         $onError = function() use($controller) {
             return $controller->getValidationErrorCallback();
         };

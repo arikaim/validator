@@ -17,7 +17,7 @@ interface RuleInterface
     /**
      * Get rule type 
      *
-     * @return void
+     * @return mixed
      */
     public function getType(); 
 
@@ -27,7 +27,7 @@ interface RuleInterface
      * @param mixed $value
      * @return bool
      */
-    public function validate($value); 
+    public function validate($value): bool; 
 
     /**
      * Return rule params
@@ -37,9 +37,19 @@ interface RuleInterface
     public function getParams();
 
     /**
-     * Retrun rule fixed field name or null if not used
+     * Set validation error ode
      *
-     * @return string|null
+     * @param string|null $error
+     * @param string|null $default
+     * @return void
+    */
+    public function setError(?string $error, ?string $default = null): void;
+
+    /**
+     * Set default error code
+     *
+     * @param string $errorCode
+     * @return void
      */
-    public function getFieldName();
+    public function setDefaultError(string $errorCode): void;
 }

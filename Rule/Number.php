@@ -19,13 +19,14 @@ class Number extends Rule
     /**
      * Constructor
      *
-     * @param array $params
+     * @param array $params 
+     * @param string|null $error 
      */
-    public function __construct($params = []) 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
 
-        $this->setError('NUMBER_NOT_VALID_ERROR');
+        $this->setDefaultError('NUMBER_NOT_VALID_ERROR');
     }
     
     /**
@@ -34,7 +35,7 @@ class Number extends Rule
      * @param mixed $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
         $errors = 0;
         $result = $this->validateType($value,Rule::NUMBER_TYPE);
@@ -53,13 +54,13 @@ class Number extends Rule
             $errors++;
         }
         
-        return ($errors > 0) ? false : true;
+        return ($errors == 0);
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       
@@ -72,7 +73,7 @@ class Number extends Rule
      * @param int|float $value
      * @return boolean
      */
-    protected function validateMinValue($value)
+    protected function validateMinValue($value): bool
     {
         if (empty($this->params->get('min')) == false) {                 
             return ($value < $this->params['min']) ? false : true; 
@@ -87,7 +88,7 @@ class Number extends Rule
      * @param int|float $value
      * @return boolean
      */
-    protected function validateMaxValue($value)
+    protected function validateMaxValue($value): bool
     {
         if (empty($this->params->get('max')) == false) {           
             return ($value > $this->params['max']) ? false : true;                

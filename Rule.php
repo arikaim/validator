@@ -27,16 +27,23 @@ abstract class Rule implements RuleInterface
     /**
      * Rule error
      *
-     * @var string
+     * @var string|null
      */
-    protected $error;
+    protected $error = null;
+
+    /**
+     * Default errror code
+     *
+     * @var string|null
+     */
+    protected $defaultError = null;
 
     /**
      * Error params
      *
      * @var array
      */
-    protected $errorParams;
+    protected $errorParams = [];
 
     /**
      * Rule params
@@ -58,7 +65,7 @@ abstract class Rule implements RuleInterface
      * @param mixed $value
      * @return bool
      */
-    public function validate($value)
+    public function validate($value): bool
     {
         return false;
     }
@@ -69,12 +76,22 @@ abstract class Rule implements RuleInterface
      * @param string|null $error
      * @param array $params 
      */
-    public function __construct($params = [], $error = null) 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        $error = $error ?? 'NOT_VALID_VALUE_ERROR';
         $this->params = new Collection($params);  
-        $this->errorParams = [];
-        $this->setError($error);
+        $this->errorParams = [];       
+        $this->setError($error,'NOT_VALID_VALUE_ERROR');       
+    }
+
+    /**
+     * Set default error code
+     *
+     * @param string $errorCode
+     * @return void
+     */
+    public function setDefaultError(string $errorCode): void
+    {
+        $this->defaultError = $errorCode;
     }
 
     /**
@@ -148,14 +165,16 @@ abstract class Rule implements RuleInterface
     }
 
     /**
-     * Set validation error
+     * Set validation error ode
      *
-     * @param string $error
+     * @param string|null $error
+     * @param string|null $default
      * @return void
      */
-    public function setError($error)
+    public function setError(?string $error, ?string $default = null): void
     {
         $this->error = $error;
+        $this->defaultError = $default;
     }
 
     /**
@@ -163,7 +182,7 @@ abstract class Rule implements RuleInterface
      *
      * @return array
      */
-    public function getErrorParams()
+    public function getErrorParams(): array
     {
         return \array_merge($this->errorParams,$this->params->toArray());   
     }
@@ -174,28 +193,18 @@ abstract class Rule implements RuleInterface
      * @param array $params
      * @return void
      */
-    public function setErrorParams($params = [])
+    public function setErrorParams($params = []): void
     {
         $this->errorParams = $params;
     }
 
     /**
-     * Return validation error
+     * Return validation error code
      *
      * @return string
      */
-    public function getError()
+    public function getError(): ?string
     {
-        return $this->error;
-    }
-
-    /**
-     * Return rule fixed rule name
-     *
-     * @return string|null
-     */
-    public function getFieldName()
-    {
-        return null;
+        return (empty($this->error) == true) ? $this->defaultError : $this->error;
     }
 }

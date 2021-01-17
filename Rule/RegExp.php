@@ -19,13 +19,14 @@ class Regexp extends Rule
     /**
      * Constructor
      *
-     * @param array $params
+     * @param array $params 
+     * @param string|null $error 
      */
-    public function __construct($params = []) 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
 
-        $this->setError('REGEXP_NOT_VALID_ERROR');
+        $this->setDefaultError('REGEXP_NOT_VALID_ERROR');
     }
     
     /**
@@ -34,7 +35,7 @@ class Regexp extends Rule
      * @param mixed $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
         $exp = $this->params->get('exp');
         $exp = (\is_array($exp) == true) ? $exp[0] : $exp;
@@ -45,7 +46,7 @@ class Regexp extends Rule
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

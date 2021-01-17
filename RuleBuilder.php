@@ -23,12 +23,12 @@ class RuleBuilder
      * @param array $descriptor
      * @return array
      */
-    public function createRules(array $descriptor)
+    public function createRules(array $descriptor): array
     {       
         $rules = [];      
         foreach ($rules as $value) {
             $rule = $this->createRule($value);
-            \array_push($rules,$rule);
+            $rules[] = $rule;
         }
 
         return $rules;
@@ -42,7 +42,7 @@ class RuleBuilder
      * @param string|null $error
      * @return Arikaim\Core\Validator\Interfaces\RuleInterface
      */
-    public function createRule($descriptor, $error = null)
+    public function createRule(string $descriptor, ?string $error = null)
     {
         $data = $this->parseRuleDescriptor($descriptor);
         $rule = Factory::createRule($data['class'],[$data['params']]);
@@ -58,17 +58,17 @@ class RuleBuilder
      * Parse rule descriptor   
      * pattern: name:param1=value|param2=value
      *
-     * @param array|null $descriptor
-     * @return void
+     * @param string $descriptor
+     * @return array
      */
-    public function parseRuleDescriptor($descriptor)
+    public function parseRuleDescriptor(string $descriptor): array
     {
         $result = [];
         $descriptor = \trim($descriptor);
         $tokens = \explode(':',$descriptor);      
         $result['class'] = \ucfirst($tokens[0]);
 
-        $params = (isset($tokens[1]) == true) ? $tokens[1] : '';
+        $params = $tokens[1] ?? '';
         $result['params'] = $this->parseRuleParams($params);
         
         return $result;
@@ -81,7 +81,7 @@ class RuleBuilder
      * @param string $params
      * @return array
      */
-    public function parseRuleParams($params)
+    public function parseRuleParams(string $params): array
     {
         $result = [];
         $tokens = \explode('|',$params);
@@ -100,17 +100,20 @@ class RuleBuilder
      * @param string $param
      * @return array
      */
-    public function parseRuleParam($param)
+    public function parseRuleParam(string $param): array
     {
         $tokens = \explode('=',$param);
         $name = $tokens[0];
-        $value = (isset($tokens[1]) == true) ? $tokens[1] : true;
+        $value = $tokens[1] ?? true;
 
         if ($name != 'exp') {
            $value = (\count(\explode(',',$value)) > 1) ? Arrays::toArray($value,',') : $value;
         }
        
-        return ['name' => $name,'value' => $value];
+        return [
+            'name' => $name,
+            'value' => $value
+        ];
     }
 
     /**

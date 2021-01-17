@@ -28,10 +28,11 @@ class DbRule extends Rule
      * Constructor
      *
      * @param array $params 
-     */
-    public function __construct($params = []) 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
         
         $this->model = Model::create($this->params->get('model'),$this->params->get('extension',null));      
     }
@@ -39,7 +40,7 @@ class DbRule extends Rule
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

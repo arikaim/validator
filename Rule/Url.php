@@ -19,18 +19,20 @@ class Url extends Rule
     /**
      * Constructor
      *
+     * @param array $params 
+     * @param string|null $error 
      */
-    public function __construct() 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct();
+        parent::__construct($params,$error);
         
-        $this->setError('URL_NOT_VALID_ERROR');  
+        $this->setDefaultError('URL_NOT_VALID_ERROR');  
     }
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

@@ -18,14 +18,15 @@ class Unique extends DbRule
 {
     /**
      * Constructor
-     * params model,field, extension, exclude
-     * @param array $params
-     */
-    public function __construct($params) 
+     *
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
         
-        $this->setError('VALUE_EXIST_ERROR');  
+        $this->setDefaultError('VALUE_EXIST_ERROR');  
     }
 
     /**
@@ -34,7 +35,7 @@ class Unique extends DbRule
      * @param mixed $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {           
         $field = $this->params->get('field',null);     
         $exclude = $this->params->get('exclude',null);
@@ -44,6 +45,6 @@ class Unique extends DbRule
             $model = $model->where($field,'<>',$exclude);
         }
 
-        return ($model->first() === null) ? true : false;          
+        return ($model->first() === null);      
     } 
 }

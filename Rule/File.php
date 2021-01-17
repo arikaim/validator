@@ -19,10 +19,12 @@ class File extends Rule
     /**
      * Constructor
      *
-     */
-    public function __construct() 
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct([]);
+        parent::__construct($params,$error);
     }
 
     /**
@@ -31,7 +33,7 @@ class File extends Rule
      * @param array $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     { 
         if (\is_array($value) == false) {
             return false;
@@ -51,7 +53,7 @@ class File extends Rule
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

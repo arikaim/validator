@@ -20,13 +20,14 @@ class Integer extends Number
     /**
      * Constructor
      *
-     * @param array $params
-     */          
-    public function __construct($params = []) 
+     * @param array $params 
+     * @param string|null $error 
+     */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
 
-        $this->setError('INT_NOT_VALID_ERROR');
+        $this->setDefaultError('INT_NOT_VALID_ERROR');
     }
 
     /**
@@ -35,7 +36,7 @@ class Integer extends Number
      * @param mixed $value
      * @return void
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {       
         $errors = 0;
         $result = $this->validateType($value,Rule::INTEGER_TYPE);
@@ -54,13 +55,13 @@ class Integer extends Number
             $errors++;
         }
         
-        return ($errors > 0) ? false : true;
+        return ($errors == 0);
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {

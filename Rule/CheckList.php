@@ -18,12 +18,13 @@ class CheckList extends Rule
 {
     /**
      * Constructor
-     * params items
-     * @param array $params
-     */
-    public function __construct($params) 
+     *
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
     }
 
     /**
@@ -32,7 +33,7 @@ class CheckList extends Rule
      * @param mixed $value
      * @return bool
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
         $items = $this->params->get('items',[]);
         if (\in_array($value,$items,false) == false) {        
@@ -46,7 +47,7 @@ class CheckList extends Rule
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

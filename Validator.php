@@ -25,21 +25,21 @@ class Validator extends Collection
      *
      * @var array
      */
-    private $rules;
+    private $rules = [];
     
     /**
      * Filters
      *
      * @var array
      */
-    private $filters;
+    private $filters = [];
 
     /**
      * Validation errors
      *
      * @var array
      */
-    private $errors;
+    private $errors = [];
 
     /**
      * On valid callback
@@ -60,21 +60,24 @@ class Validator extends Collection
      *
      * @var Closure|null
     */
-    private $getValidCallback;
+    private $getValidCallback = null;
     
     /**
      * Get error callback
      *
      * @var Closure|null
      */
-    private $getErrorCallback;
+    private $getErrorCallback = null;
 
     /**
      * Constructor
      * 
      * @param array $data
+     * @param Closure|null $getValidCallback
+     * @param Closure|null $getErrorCallback
+     * @param array $data
      */
-    public function __construct($data = [], Closure $getValidCallback = null, Closure $getErrorCallback = null) 
+    public function __construct(array $data = [], ?Closure $getValidCallback = null, ?Closure $getErrorCallback = null) 
     {
         parent::__construct($data);
         
@@ -90,7 +93,7 @@ class Validator extends Collection
      *
      * @return void
      */
-    protected function initCallback()
+    protected function initCallback(): void
     {
         if (empty($this->onValidCallback) == true) {
             $this->onValidCallback = ($this->getValidCallback instanceof Closure) ? ($this->getValidCallback)() : null;
@@ -104,10 +107,10 @@ class Validator extends Collection
     /**
      * Set callback for validation done
      *
-     * @param \Closure $callback
+     * @param Closure $callback
      * @return void
     */
-    public function onValid(Closure $callback)
+    public function onValid(Closure $callback): void
     {
         $this->onValidCallback = $callback; 
     }
@@ -115,10 +118,10 @@ class Validator extends Collection
     /**
      * Set callback for error valdation
      *
-     * @param \Closure $callback
+     * @param Closure $callback
      * @return void
     */
-    public function onError(Closure $callback)
+    public function onError(Closure $callback): void
     {
         $this->onErrorCallback = $callback; 
     }
@@ -126,19 +129,20 @@ class Validator extends Collection
     /**
      * Add validation rule
      *
-     * @param string $fieldName
      * @param Rule|string $rule
-     * @param string|null $error
+     * @param string $fieldName    
+     * @param string|null $fieldName
+     * @param string|null $errorCode
      * 
      * @return Validator
      */
-    public function addRule($rule, $fieldName = null, $error = null) 
+    public function addRule($rule, ?string $fieldName = null, ?string $errorCode = null) 
     {                
         if (\is_string($rule) == true) {
-            $rule = $this->rule()->createRule($rule,$error);
+            $rule = $this->rule()->createRule($rule,$errorCode);
         }
         if (\is_object($rule) == true) {      
-            $fieldName = (empty($fieldName) == true) ? $rule->getFieldName() : $fieldName;
+            $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
             if (\array_key_exists($fieldName,$this->rules) == false) {
                 $this->rules[$fieldName] = [];
             }
@@ -171,12 +175,13 @@ class Validator extends Collection
     /**
      * Add filter
      *
-     * @param string $fieldName
-     * @param Filter $filter
+     * @param string|null $fieldName
+     * @param Filter|string $filter
      * @return Validator
      */
-    public function addFilter($fieldName, Filter $filter) 
+    public function addFilter(?string $fieldName, $filter) 
     {                   
+        $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
         if (\is_string($filter) == true) {
             $filter = FilterBuilder::createFilter($fieldName,$filter);
         }
@@ -192,12 +197,12 @@ class Validator extends Collection
     /**
      * Sanitize form fields values
      *
-     * @param array $data
+     * @param array|null $data
      * @return Validator
      */
-    public function doFilter($data = null) 
-    {          
-        if ($data != null) {
+    public function doFilter(?array $data = null) 
+    {         
+        if (empty($data) == false) {
             $this->data = $data;
         }
       
@@ -216,10 +221,10 @@ class Validator extends Collection
     /**
      * Sanitize and validate form
      *
-     * @param array $data
-     * @return void
+     * @param array|null $data
+     * @return bool
      */
-    public function filterAndValidate($data = null)
+    public function filterAndValidate(?array $data = null): bool
     {
         return $this->doFilter($data)->validate($data);
     }
@@ -231,7 +236,7 @@ class Validator extends Collection
      * @param array $rules
      * @return bool
      */
-    public function validateRules($fieldName, $rules)
+    public function validateRules(string $fieldName, array $rules): bool
     {
         $value = $this->get($fieldName,null);
         $errors = 0;
@@ -252,7 +257,7 @@ class Validator extends Collection
      * Validate rule
      *
      * @param Rule $rule
-     * @param mxied $value
+     * @param mixed $value
      * @return bool
      */
     public function validateRule($rule, $value)
@@ -271,11 +276,11 @@ class Validator extends Collection
     /**
      * Validate 
      *
-     * @param array $data
-     * @param array $rules
+     * @param array|null $data
+     * @param array|null $rules
      * @return boolean
      */
-    public function validate($data = null, $rules = null)
+    public function validate(?array $data = null, ?array $rules = null): bool
     {
         $this->errors = [];
         if (\is_array($data) == true) {
@@ -290,9 +295,10 @@ class Validator extends Collection
        
         if ($this->isValid() == true) {
             // run data valid callback
-            if ($this->onErrorCallback instanceof Closure) {
+            if ($this->onValidCallback instanceof Closure) {
                 ($this->onValidCallback)($this);  
             }  
+
             return true;
         }
 
@@ -308,11 +314,11 @@ class Validator extends Collection
      * Set validation error
      *
      * @param string $fieldName
-     * @param string $errorCode
+     * @param string|null $errorCode
      * @param array $params
      * @return void
      */
-    public function addError($fieldName, $errorCode, array $params = [])
+    public function addError(string $fieldName, ?string $errorCode, array $params = []): void
     {
         $error = [
             'field_name' => $fieldName,
@@ -327,7 +333,7 @@ class Validator extends Collection
      *
      * @param mixed $value
      * @param int $type
-     * @return void
+     * @return mixed
      */
     public static function sanitizeVariable($value, $type = FILTER_SANITIZE_STRING) 
     {     
@@ -339,7 +345,7 @@ class Validator extends Collection
      *
      * @return boolean
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return ($this->getErrorsCount() == 0);     
     }
@@ -349,7 +355,7 @@ class Validator extends Collection
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -359,7 +365,7 @@ class Validator extends Collection
      *
      * @return int
      */
-    public function getErrorsCount()
+    public function getErrorsCount(): int
     {
         return \count($this->errors);
     }
@@ -370,9 +376,9 @@ class Validator extends Collection
      * @param string $fieldName
      * @return array
      */
-    public function getRules($fieldName)
+    public function getRules(string $fieldName): array
     {
-        return (isset($this->rules[$fieldName]) == true) ? $this->rules[$fieldName] : [];          
+        return $this->rules[$fieldName] ?? [];          
     }
 
     /**
@@ -383,7 +389,7 @@ class Validator extends Collection
      */
     public function getFilters($fieldName)
     {   
-        $all = (isset($this->filters['*']) == true) ? $this->filters['*'] : [];
+        $all = $this->filters['*'] ?? [];
 
         return (isset($this->filters[$fieldName]) == true) ? \array_merge($all,$this->filters[$fieldName]) : $all;          
     }
@@ -395,7 +401,7 @@ class Validator extends Collection
      * @param mixed $default If key not exists return default value
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {       
         $item = $this->data[$key] ?? $default;
 

@@ -20,14 +20,15 @@ class Csrf extends Rule
     /**
      * Constructor
      *
-     * @param array $params
-     */
-    public function __construct($params = []) 
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
         
         $this->required();
-        $this->setError('ACCESS_DENIED');
+        $this->setDefaultError('ACCESS_DENIED');
     }
 
     /**
@@ -36,7 +37,7 @@ class Csrf extends Rule
      * @param string $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
         return CsrfToken::validateToken($value);      
     } 
@@ -44,7 +45,7 @@ class Csrf extends Rule
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

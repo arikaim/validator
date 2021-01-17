@@ -34,7 +34,7 @@ class Sanitize extends Filter
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       

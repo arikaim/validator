@@ -20,13 +20,14 @@ class FloatNumber extends Number
     /**
      * Constructor
      *
-     * @param array $params
+     * @param array $params 
+     * @param string|null $error 
      */
-    public function __construct($params = []) 
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct($params);
+        parent::__construct($params,$error);
 
-        $this->setError('FLOAT_NOT_VALID_ERROR');
+        $this->setDefaultError('FLOAT_NOT_VALID_ERROR');
     }
 
     /**
@@ -35,7 +36,7 @@ class FloatNumber extends Number
      * @param mixed $value
      * @return bool
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {
         $errors = 0;
         $result = $this->validateType($value,Rule::FLOAT_TYPE);
@@ -54,13 +55,13 @@ class FloatNumber extends Number
             $errors++;
         }
         
-        return ($errors > 0) ? false : true;
+        return ($errors == 0);
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {

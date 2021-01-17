@@ -23,7 +23,7 @@ class FilterBuilder
      * @param mixed $args
      * @return Arikaim\Core\Interfaces\FilterInterface
      */
-    public static function createFilter($class, $args = null)
+    public static function createFilter(string $class, $args = null)
     {                   
         return Factory::createInstance(Factory::getValidatorFiltersClass($class),$args);             
     }

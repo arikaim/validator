@@ -21,12 +21,14 @@ class ExtensionPath extends Rule
     /**
      * Constructor
      *
-     */
-    public function __construct() 
+     * @param array $params 
+     * @param string|null $error 
+    */
+    public function __construct(array $params = [], ?string $error = null) 
     {
-        parent::__construct([]);
+        parent::__construct($params,$error);
 
-        $this->setError('EXTENSION_NOT_EXISTS');
+        $this->setDefaultError('EXTENSION_NOT_EXISTS');
     }
 
     /**
@@ -35,15 +37,15 @@ class ExtensionPath extends Rule
      * @param mixed $value
      * @return boolean
      */
-    public function validate($value) 
+    public function validate($value): bool 
     {           
-        return (File::exists(Path::EXTENSIONS_PATH . $value) == false) ? false : true;                    
+        return (File::exists(Path::EXTENSIONS_PATH . $value) == true);               
     } 
 
     /**
      * Return filter type
      *
-     * @return int
+     * @return mixed
      */
     public function getType()
     {       
