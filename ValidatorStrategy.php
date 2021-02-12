@@ -19,11 +19,20 @@ use Slim\Interfaces\InvocationStrategyInterface;
 class ValidatorStrategy implements InvocationStrategyInterface
 {
     /**
+     * Container ref
+     *
+     * @var Container|null
+     */
+    protected $container;
+
+    /**
      * Constructor
      *
+     * @param Container|null $container;
      */
-    public function __construct()
-    {             
+    public function __construct($container = null)
+    {         
+        $this->container = $container;
     }
 
     /**
@@ -37,6 +46,11 @@ class ValidatorStrategy implements InvocationStrategyInterface
     */
     public function __invoke(callable $callable, ServerRequestInterface $request, ResponseInterface $response, array $routeArguments): ResponseInterface  
     {
+        $authProvider = $request->getAttribute('auth_provider');
+        if (empty($authProvider) == false) {
+            $this->container->get('access')->withProvider($authProvider);          
+        }
+     
         foreach ($routeArguments as $key => $value) {          
             $request = $request->withAttribute($key, $value);
         }
