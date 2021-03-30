@@ -404,8 +404,14 @@ class Validator extends Collection
     public function get(string $key, $default = null)
     {       
         $item = $this->data[$key] ?? $default;
+        if (\is_array($item) == true) {
+            return $item;
+        }
+        if (\is_string($item) == true) {
+            return \trim($item);
+        }
 
-        return (\is_array($item) == true) ? $item : \trim($item);           
+        return $item;        
     }
 
     /**
@@ -416,8 +422,6 @@ class Validator extends Collection
      */
     public function offsetGet($key) 
     {
-        $item = $this->data[$key] ?? null;
-
-        return (\is_array($item) == true) ? $item : \trim($item);
+        return $this->get($key);
     }
 }
