@@ -74,8 +74,7 @@ class Validator extends Collection
      * 
      * @param array $data
      * @param Closure|null $getValidCallback
-     * @param Closure|null $getErrorCallback
-     * @param array $data
+     * @param Closure|null $getErrorCallback    
      */
     public function __construct(array $data = [], ?Closure $getValidCallback = null, ?Closure $getErrorCallback = null) 
     {
@@ -130,10 +129,9 @@ class Validator extends Collection
      * Add validation rule
      *
      * @param Rule|string $rule
-     * @param string $fieldName    
+     * @param string|null $fieldName    
      * @param string|null $fieldName
      * @param string|null $errorCode
-     * 
      * @return Validator
      */
     public function addRule($rule, ?string $fieldName = null, ?string $errorCode = null) 
@@ -277,10 +275,9 @@ class Validator extends Collection
      * Validate 
      *
      * @param array|null $data
-     * @param array|null $rules
      * @return boolean
      */
-    public function validate(?array $data = null, ?array $rules = null): bool
+    public function validate(?array $data = null): bool
     {
         $this->errors = [];
         if (\is_array($data) == true) {
@@ -347,7 +344,7 @@ class Validator extends Collection
      */
     public function isValid(): bool
     {
-        return ($this->getErrorsCount() == 0);     
+        return (\count($this->errors) == 0);     
     }
 
     /**

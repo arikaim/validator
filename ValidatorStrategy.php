@@ -46,13 +46,8 @@ class ValidatorStrategy implements InvocationStrategyInterface
     */
     public function __invoke(callable $callable, ServerRequestInterface $request, ResponseInterface $response, array $routeArguments): ResponseInterface  
     {
-        $authProvider = $request->getAttribute('auth_provider');
-        if (empty($authProvider) == false) {
-            $this->container->get('access')->withProvider($authProvider);          
-        }
-     
         foreach ($routeArguments as $key => $value) {          
-            $request = $request->withAttribute($key, $value);
+            $request = $request->withAttribute($key,$value);
         }
         $body = $request->getParsedBody();
         $body = (\is_array($body) == false) ? [] : $body;
