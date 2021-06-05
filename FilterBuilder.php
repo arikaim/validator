@@ -39,7 +39,7 @@ class FilterBuilder
     {  
         $args = $args ?? [];
 
-        return Self::createFilter(ucfirst($name),$args);       
+        return Self::createFilter(\ucfirst($name),$args);       
     }
 
     /**

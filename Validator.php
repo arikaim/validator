@@ -10,6 +10,8 @@
 namespace Arikaim\Core\Validator;
 
 use Arikaim\Core\Collection\Collection;
+use Arikaim\Core\Validator\Interfaces\FilterInterface;
+use Arikaim\Core\Utils\Factory;
 use Arikaim\Core\Validator\Rule;
 use Arikaim\Core\Validator\FilterBuilder;
 use Arikaim\Core\Validator\RuleBuilder;
@@ -175,20 +177,23 @@ class Validator extends Collection
      *
      * @param string|null $fieldName
      * @param Filter|string $filter
+     * @param array $args
      * @return Validator
      */
-    public function addFilter(?string $fieldName, $filter) 
+    public function addFilter(?string $fieldName, $filter, array $args = []) 
     {                   
         $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
         if (\is_string($filter) == true) {
-            $filter = FilterBuilder::createFilter($fieldName,$filter);
+            $filter = Factory::createInstance(Factory::getValidatorFiltersClass($filter),$args);                   
         }
        
-        if (\array_key_exists($fieldName,$this->filters) == false) {
-            $this->filters[$fieldName] = [];
-        }    
-        \array_push($this->filters[$fieldName],$filter);                          
-                    
+        if ($filter instanceof FilterInterface) {
+            if (\array_key_exists($fieldName,$this->filters) == false) {
+                $this->filters[$fieldName] = [];
+            }    
+            \array_push($this->filters[$fieldName],$filter);    
+        }
+                                                 
         return $this;
     }
     
@@ -204,7 +209,7 @@ class Validator extends Collection
             $this->data = $data;
         }
       
-        foreach ($this->data as $fieldName => $value) {     
+        foreach ($this->data as $fieldName => $value) {            
             $filters = $this->getFilters($fieldName);            
             foreach ($filters as $filter) {
                 if (\is_object($filter) == true) {
