@@ -72,6 +72,13 @@ class Validator extends Collection
     private $getErrorCallback = null;
 
     /**
+     *  Rule buidler
+     *
+     * @var object|null
+     */
+    private $builder = null;
+
+    /**
      * Constructor
      * 
      * @param array $data
@@ -139,7 +146,7 @@ class Validator extends Collection
     public function addRule($rule, ?string $fieldName = null, ?string $errorCode = null) 
     {                
         if (\is_string($rule) == true) {
-            $rule = $this->rule()->createRule($rule,$errorCode);
+            $rule = RuleBuilder::createRule($rule,$errorCode);
         }
         if (\is_object($rule) == true) {      
             $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
@@ -150,16 +157,6 @@ class Validator extends Collection
         } 
 
         return $this;
-    }
-
-    /**
-     * Return rule builder
-     *
-     * @return RuleBuilder
-     */
-    public function rule()
-    {  
-        return new RuleBuilder();
     }
 
     /**

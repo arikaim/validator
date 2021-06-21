@@ -42,7 +42,7 @@ class ValidatorStrategy implements InvocationStrategyInterface
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
      * @param array                  $routeArguments
-     * @return mixed
+     * @return ResponseInterface
     */
     public function __invoke(callable $callable, ServerRequestInterface $request, ResponseInterface $response, array $routeArguments): ResponseInterface  
     {

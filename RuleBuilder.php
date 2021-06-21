@@ -23,11 +23,11 @@ class RuleBuilder
      * @param array $descriptor
      * @return array
      */
-    public function createRules(array $descriptor): array
+    public static function createRules(array $descriptor): array
     {       
         $rules = [];      
-        foreach ($rules as $value) {
-            $rule = $this->createRule($value);
+        foreach ($descriptor as $value) {
+            $rule = Self::createRule($value);
             $rules[] = $rule;
         }
 
@@ -42,9 +42,9 @@ class RuleBuilder
      * @param string|null $error
      * @return Arikaim\Core\Validator\Interfaces\RuleInterface
      */
-    public function createRule(string $descriptor, ?string $error = null)
+    public static function createRule(string $descriptor, ?string $error = null)
     {
-        $data = $this->parseRuleDescriptor($descriptor);
+        $data = Self::parseRuleDescriptor($descriptor);
         $rule = Factory::createRule($data['class'],[$data['params']]);
 
         if (empty($error) == false && \is_object($rule) == true) {
@@ -61,7 +61,7 @@ class RuleBuilder
      * @param string $descriptor
      * @return array
      */
-    public function parseRuleDescriptor(string $descriptor): array
+    public static function parseRuleDescriptor(string $descriptor): array
     {
         $result = [];
         $descriptor = \trim($descriptor);
@@ -69,7 +69,7 @@ class RuleBuilder
         $result['class'] = \ucfirst($tokens[0]);
 
         $params = $tokens[1] ?? '';
-        $result['params'] = $this->parseRuleParams($params);
+        $result['params'] = Self::parseRuleParams($params);
         
         return $result;
     }
@@ -81,12 +81,12 @@ class RuleBuilder
      * @param string $params
      * @return array
      */
-    public function parseRuleParams(string $params): array
+    public static function parseRuleParams(string $params): array
     {
         $result = [];
         $tokens = \explode('|',$params);
         foreach ($tokens as $value) {
-            $param = $this->parseRuleParam($value);
+            $param = Self::parseRuleParam($value);
             $result[$param['name']] = $param['value'];      
         }
 
@@ -100,7 +100,7 @@ class RuleBuilder
      * @param string $param
      * @return array
      */
-    public function parseRuleParam(string $param): array
+    public static function parseRuleParam(string $param): array
     {
         $tokens = \explode('=',$param);
         $name = $tokens[0];
@@ -111,7 +111,7 @@ class RuleBuilder
         }
        
         return [
-            'name' => $name,
+            'name'  => $name,
             'value' => $value
         ];
     }
