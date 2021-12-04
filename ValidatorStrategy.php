@@ -49,20 +49,18 @@ class ValidatorStrategy implements InvocationStrategyInterface
         foreach ($routeArguments as $key => $value) {          
             $request = $request->withAttribute($key,$value);
         }
-        $body = $request->getParsedBody();
-        $body = (\is_array($body) == false) ? [] : $body;
-        $data = \array_merge($routeArguments,$body);
-        $controller = $callable[0];
-
-        $onValid = function() use ($controller) {
-            return $controller->getDataValidCallback();
-        };
-    
-        $onError = function() use($controller) {
-            return $controller->getValidationErrorCallback();
-        };
-        
-        $validator = new Validator($data,$onValid,$onError);
+        $body = $request->getParsedBody();        
+        $data = \array_merge($routeArguments,(\is_array($body) == false) ? [] : $body);
+     
+        $validator = new Validator(
+            $data,
+            function() use ($callable) {
+                return $callable[0]->getDataValidCallback();
+            },
+            function() use($callable) {
+                return $callable[0]->getValidationErrorCallback();
+            }
+        );
 
         return $callable($request,$response,$validator,$routeArguments);
     }
