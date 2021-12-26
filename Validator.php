@@ -15,6 +15,7 @@ use Arikaim\Core\Utils\Factory;
 use Arikaim\Core\Validator\Rule;
 use Arikaim\Core\Validator\FilterBuilder;
 use Arikaim\Core\Validator\RuleBuilder;
+use Arikaim\Core\Validator\DataValidatorException;
 use Closure;
 
 /**
@@ -221,12 +222,12 @@ class Validator extends Collection
     /**
      * Sanitize and validate form
      *
-     * @param array|null $data
+     * @param bool $throwException
      * @return bool
      */
-    public function filterAndValidate(?array $data = null): bool
+    public function filterAndValidate(bool $throwException = false): bool
     {
-        return $this->doFilter($data)->validate($data);
+        return $this->doFilter()->validate($throwException);
     }
 
     /**
@@ -276,16 +277,13 @@ class Validator extends Collection
     /**
      * Validate 
      *
-     * @param array|null $data
+     * @param bool $throwException
      * @return boolean
+     * @throws DataValidatorException
      */
-    public function validate(?array $data = null): bool
+    public function validate(bool $throwException = false): bool
     {
-        $this->errors = [];
-        if (\is_array($data) == true) {
-            $this->data = $data;
-        }
-           
+        $this->errors = [];   
         $this->initCallback();
 
         foreach ($this->rules as $fieldName => $rules) {  
@@ -303,9 +301,13 @@ class Validator extends Collection
 
         // run error callback       
         if ($this->onErrorCallback instanceof Closure) {
-            ($this->onErrorCallback)($this->getErrors()); 
+            $errors = ($this->onErrorCallback)($this->getErrors()); 
         }                      
         
+        if ($throwException == true) {
+            throw new DataValidatorException('Data validation error',$errors ?? $this->getErrors());
+        }
+
         return false;   
     }
 
