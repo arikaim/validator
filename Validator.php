@@ -418,10 +418,10 @@ class Validator extends Collection
     /**
      * Get item 
      *
-     * @param string $key
+     * @param mixed $key
      * @return mixed
      */
-    public function offsetGet($key) 
+    public function offsetGet(mixed $key): mixed
     {
         return $this->get($key);
     }
