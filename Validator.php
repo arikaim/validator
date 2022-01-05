@@ -421,7 +421,8 @@ class Validator extends Collection
      * @param mixed $key
      * @return mixed
      */
-    public function offsetGet(mixed $key): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($key)
     {
         return $this->get($key);
     }
