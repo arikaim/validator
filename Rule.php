@@ -201,7 +201,7 @@ abstract class Rule implements RuleInterface
     /**
      * Return validation error code
      *
-     * @return string
+     * @return string|null
      */
     public function getError(): ?string
     {

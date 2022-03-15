@@ -149,6 +149,7 @@ class Validator extends Collection
         if (\is_string($rule) == true) {
             $rule = RuleBuilder::createRule($rule,$errorCode);
         }
+     
         if (\is_object($rule) == true) {      
             $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
             if (\array_key_exists($fieldName,$this->rules) == false) {
@@ -245,7 +246,8 @@ class Validator extends Collection
             $valid = $this->validateRule($rule,$value);
             if ($valid == false) { 
                 $errorCode = $rule->getError();
-                $params = $rule->getErrorParams();               
+                $params = $rule->getErrorParams();       
+                        
                 $this->addError($fieldName,$errorCode,$params); 
                 $errors++;              
             }
@@ -261,7 +263,7 @@ class Validator extends Collection
      * @param mixed $value
      * @return bool
      */
-    public function validateRule($rule, $value)
+    public function validateRule($rule, $value): bool
     {
         if (empty($value) == true && $rule->isRequired() == false) {
             return true;
@@ -271,7 +273,7 @@ class Validator extends Collection
         $ruleOptions = ($type == FILTER_CALLBACK) ? ['options' => [$rule, 'validate']] : [];          
         $result = \filter_var($value,$type,$ruleOptions); 
 
-        return $result;
+        return (bool)$result;
     }
 
     /**

@@ -25,7 +25,7 @@ class Number extends Rule
     public function __construct(array $params = [], ?string $error = null) 
     {
         parent::__construct($params,$error);
-
+     
         $this->setDefaultError('NUMBER_NOT_VALID_ERROR');
     }
     
@@ -40,17 +40,14 @@ class Number extends Rule
         $errors = 0;
         $result = $this->validateType($value,Rule::NUMBER_TYPE);
         if ($result == false) {
-            $this->setError('NUMBER_NOT_VALID_ERROR');
             $errors++;
         } 
         $result = $this->validateMinValue($value);
         if ($result == false) {
-            $this->setError('NUMBER_MIN_VALUE_ERROR');
             $errors++;
         }   
         $result = $this->validateMaxValue($value);
         if ($result == false) {
-            $this->setError('NUMBER_MAX_VALUE_ERROR');
             $errors++;
         }
         
