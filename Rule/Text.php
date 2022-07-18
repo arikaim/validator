@@ -38,7 +38,7 @@ class Text extends Rule
     public function validate($value): bool 
     {
         $errors = 0;
-        $min = $this->params->get('min',null);      
+        $min = $this->params->get('min',null);     
         $max = $this->params->get('max',null);
 
         if (empty($min) == false) {           

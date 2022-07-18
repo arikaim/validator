@@ -264,16 +264,15 @@ class Validator extends Collection
      * @return bool
      */
     public function validateRule($rule, $value): bool
-    {
-        if (empty($value) == true && $rule->isRequired() == false) {
-            return true;
+    {  
+        if (empty($value) == true) {
+            return ($rule->isRequired() == true) ? false : true;
         }
 
         $type = $rule->getType();
-        $ruleOptions = ($type == FILTER_CALLBACK) ? ['options' => [$rule, 'validate']] : [];          
-        $result = \filter_var($value,$type,$ruleOptions); 
+        $ruleOptions = ($type == FILTER_CALLBACK) ? ['options' => [$rule, 'validate']] : [];    
 
-        return (bool)$result;
+        return (bool)\filter_var($value,$type,$ruleOptions);        
     }
 
     /**
