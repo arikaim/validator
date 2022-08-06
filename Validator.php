@@ -155,7 +155,7 @@ class Validator extends Collection
             if (\array_key_exists($fieldName,$this->rules) == false) {
                 $this->rules[$fieldName] = [];
             }
-            \array_push($this->rules[$fieldName],$rule);                   
+            $this->rules[$fieldName][] = $rule;                   
         } 
 
         return $this;
@@ -190,7 +190,7 @@ class Validator extends Collection
             if (\array_key_exists($fieldName,$this->filters) == false) {
                 $this->filters[$fieldName] = [];
             }    
-            \array_push($this->filters[$fieldName],$filter);    
+            $this->filters[$fieldName][] = $filter;    
         }
                                                  
         return $this;
@@ -327,7 +327,7 @@ class Validator extends Collection
             'error_code' => $errorCode,
             'params'     => $params
         ];
-        \array_push($this->errors,$error);
+        $this->errors[] = $error;
     }
 
     /**
