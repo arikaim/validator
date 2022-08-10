@@ -10,7 +10,6 @@
 namespace Arikaim\Core\Validator\Rule;
 
 use Arikaim\Core\Validator\Rule;
-use Arikaim\Core\Utils\File;
 use Arikaim\Core\Utils\Path;
 
 /**
@@ -39,7 +38,7 @@ class ExtensionPath extends Rule
      */
     public function validate($value): bool 
     {           
-        return (File::exists(Path::EXTENSIONS_PATH . $value) == true);               
+        return (\file_exists(Path::EXTENSIONS_PATH . $value) == true);               
     } 
 
     /**
