@@ -150,7 +150,7 @@ class Validator extends Collection
             $rule = RuleBuilder::createRule($rule,$errorCode);
         }
      
-        if (\is_object($rule) == true) {      
+        if ($rule !== null) {      
             $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
             if (\array_key_exists($fieldName,$this->rules) == false) {
                 $this->rules[$fieldName] = [];
@@ -211,9 +211,7 @@ class Validator extends Collection
         foreach ($this->data as $fieldName => $value) {            
             $filters = $this->getFilters($fieldName);            
             foreach ($filters as $filter) {
-                if (\is_object($filter) == true) {
-                    $this->data[$fieldName] = $filter->processFilter($this->data[$fieldName]);
-                }
+                $this->data[$fieldName] = $filter->processFilter($this->data[$fieldName]);
             }                 
         }      
       

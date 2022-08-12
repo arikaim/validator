@@ -40,7 +40,7 @@ class RuleBuilder
      * 
      * @param string $descriptor
      * @param string|null $error
-     * @return Arikaim\Core\Validator\Interfaces\RuleInterface
+     * @return Arikaim\Core\Validator\Interfaces\RuleInterface|null
      */
     public static function createRule(string $descriptor, ?string $error = null)
     {
