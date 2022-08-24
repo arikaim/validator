@@ -137,6 +137,6 @@ class RuleBuilder
      */
     public function __call($name, $args)
     {  
-      //  return Self::createRule($name,$args);       
+        return Self::createRule($name,$args);       
     }
 }
