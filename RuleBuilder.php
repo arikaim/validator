@@ -9,8 +9,6 @@
  */
 namespace Arikaim\Core\Validator;
 
-use Arikaim\Core\Utils\Factory;
-
 /**
  * Rule builder
  */
@@ -41,16 +39,33 @@ class RuleBuilder
      * @param string|null $error
      * @return Arikaim\Core\Validator\Interfaces\RuleInterface|null
      */
-    public static function createRule(string $descriptor, ?string $error = null)
+    public static function createRule(string $descriptor, ?string $error = null): ?object
     {
         $data = Self::parseRuleDescriptor($descriptor);
-        $rule = Factory::createRule($data['class'],[$data['params']]);
+        $class = CORE_NAMESPACE . '\\Validator\\Rule\\' . \ucfirst($data['class']);
+        $args = [$data['params']];
+        $rule = null;
 
-        if (empty($error) == false && \is_object($rule) == true) {
+        if (\class_exists($class) == true) {
+            $rule = (empty($args) == false) ? new $class(...$args) : new $class();
+        }
+
+        if (empty($error) == false && $rule !== null) {
             $rule->setError($error);          
         }
 
         return $rule;
+    }
+
+    /**
+     * Get validator rule full class name
+     *
+     * @param string $baseClass
+     * @return string
+     */
+    public static function getValidatorRuleClass(string $baseClass): string
+    {
+        return CORE_NAMESPACE . '\\Validator\\Rule\\' . $baseClass;    
     }
 
     /**
@@ -63,8 +78,7 @@ class RuleBuilder
     public static function parseRuleDescriptor(string $descriptor): array
     {
         $result = [];
-        $descriptor = \trim($descriptor);
-        $tokens = \explode(':',$descriptor);      
+        $tokens = \explode(':',\trim($descriptor));      
         $result['class'] = \ucfirst($tokens[0]);
 
         $params = $tokens[1] ?? '';
@@ -102,15 +116,14 @@ class RuleBuilder
     public static function parseRuleParam(string $param): array
     {
         $tokens = \explode('=',$param);
-        $name = $tokens[0];
         $value = $tokens[1] ?? true;
 
-        if ($name != 'exp') {
+        if ($tokens[0] != 'exp') {
            $value = (\count(\explode(',',$value)) > 1) ? \explode(',',$value) : $value;
         }
        
         return [
-            'name'  => $name,
+            'name'  => $tokens[0],
             'value' => $value
         ];
     }
@@ -124,6 +137,6 @@ class RuleBuilder
      */
     public function __call($name, $args)
     {  
-        return Factory::createRule($name,$args);       
+      //  return Self::createRule($name,$args);       
     }
 }

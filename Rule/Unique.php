@@ -7,9 +7,9 @@
  * @license     http://www.arikaim.com/license
  * 
  */
-namespace Arikaim\Core\Validator\Rule\Db;
+namespace Arikaim\Core\Validator\Rule;
 
-use Arikaim\Core\Validator\Rule\Db\DbRule;
+use Arikaim\Core\Validator\Rule\DbRule;
 
 /**
  * Unique value rule, Check if value in model table not exists

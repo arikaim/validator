@@ -9,11 +9,9 @@
  */
 namespace Arikaim\Core\Validator;
 
-use Arikaim\Core\Collection\Collection;
 use Arikaim\Core\Validator\Interfaces\FilterInterface;
+use Arikaim\Core\Collection\Collection;
 use Arikaim\Core\Utils\Factory;
-use Arikaim\Core\Validator\Rule;
-use Arikaim\Core\Validator\FilterBuilder;
 use Arikaim\Core\Validator\RuleBuilder;
 use Arikaim\Core\Validator\DataValidatorException;
 use Closure;
@@ -71,13 +69,6 @@ class Validator extends Collection
      * @var Closure|null
      */
     private $getErrorCallback = null;
-
-    /**
-     *  Rule buidler
-     *
-     * @var object|null
-     */
-    private $builder = null;
 
     /**
      * Constructor
@@ -138,7 +129,7 @@ class Validator extends Collection
     /**
      * Add validation rule
      *
-     * @param Rule|string $rule
+     * @param Arikaim\Core\Validator\Interfaces\RuleInterface|string $rule
      * @param string|null $fieldName    
      * @param string|null $fieldName
      * @param string|null $errorCode
@@ -164,11 +155,11 @@ class Validator extends Collection
     /**
      * Return filter builder
      *
-     * @return FilterBuilder
+     * @return Arikaim\Core\Validator\FilterBuilder
      */
     public function filter()
     {
-        return new FilterBuilder();
+        return new \Arikaim\Core\Validator\FilterBuilder();
     }    
 
     /**
@@ -257,7 +248,7 @@ class Validator extends Collection
     /**
      * Validate rule
      *
-     * @param Rule $rule
+     * @param Arikaim\Core\Validator\Interfaces\RuleInterface $rule
      * @param mixed $value
      * @return bool
      */

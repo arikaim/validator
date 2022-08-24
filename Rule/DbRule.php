@@ -7,7 +7,7 @@
  * @license     http://www.arikaim.com/license
  * 
  */
-namespace Arikaim\Core\Validator\Rule\Db;
+namespace Arikaim\Core\Validator\Rule;
 
 use Arikaim\Core\Db\Model;
 use Arikaim\Core\Validator\Rule;
