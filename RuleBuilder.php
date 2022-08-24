@@ -10,7 +10,6 @@
 namespace Arikaim\Core\Validator;
 
 use Arikaim\Core\Utils\Factory;
-use Arikaim\Core\Collection\Arrays;
 
 /**
  * Rule builder
@@ -107,7 +106,7 @@ class RuleBuilder
         $value = $tokens[1] ?? true;
 
         if ($name != 'exp') {
-           $value = (\count(\explode(',',$value)) > 1) ? Arrays::toArray($value,',') : $value;
+           $value = (\count(\explode(',',$value)) > 1) ? \explode(',',$value) : $value;
         }
        
         return [
