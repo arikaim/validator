@@ -44,13 +44,10 @@ class RuleBuilder
         $data = Self::parseRuleDescriptor($descriptor);
         $class = CORE_NAMESPACE . '\\Validator\\Rule\\' . \ucfirst($data['class']);
         $args = [$data['params']];
-        $rule = null;
 
-        if (\class_exists($class) == true) {
-            $rule = (empty($args) == false) ? new $class(...$args) : new $class();
-        }
-
-        if (empty($error) == false && $rule !== null) {
+        $rule = (empty($args) == false) ? new $class(...$args) : new $class();
+    
+        if (empty($error) == false) {
             $rule->setError($error);          
         }
 
@@ -78,7 +75,7 @@ class RuleBuilder
     public static function parseRuleDescriptor(string $descriptor): array
     {
         $result = [];
-        $tokens = \explode(':',\trim($descriptor));      
+        $tokens = \explode(':',\trim($descriptor));   
         $result['class'] = \ucfirst($tokens[0]);
 
         $params = $tokens[1] ?? '';
