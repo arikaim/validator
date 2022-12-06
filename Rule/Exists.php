@@ -37,7 +37,7 @@ class Exists extends DbRule
      */
     public function validate($value): bool 
     {           
-        if (\is_object($this->model) == false) {
+        if ($this->model == null) {
             return false;
         }
         
