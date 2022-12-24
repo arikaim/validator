@@ -328,7 +328,7 @@ class Validator extends Collection
      */
     public static function sanitizeVariable($value, $type = FILTER_SANITIZE_STRING) 
     {     
-        return \filter_var(\trim($value),$type);       
+        return \filter_var(\trim($value ?? ''),$type);       
     }
 
     /**
@@ -399,7 +399,7 @@ class Validator extends Collection
             return $item;
         }
         if (\is_string($item) == true) {
-            return \trim($item);
+            return \trim($item ?? '');
         }
 
         return $item;        

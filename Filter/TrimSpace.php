@@ -24,7 +24,7 @@ class TrimSpace extends Filter
      */
     public function filterValue($value) 
     {       
-        return \trim($value);
+        return \trim($value ?? '');
     } 
 
     /**

@@ -24,7 +24,7 @@ class UpperCase extends Filter
      */
     public function filterValue($value) 
     {       
-        return \strtoupper(\trim($value));
+        return \strtoupper(\trim($value ?? ''));
     } 
 
     /**

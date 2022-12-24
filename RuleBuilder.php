@@ -75,7 +75,7 @@ class RuleBuilder
     public static function parseRuleDescriptor(string $descriptor): array
     {
         $result = [];
-        $tokens = \explode(':',\trim($descriptor));   
+        $tokens = \explode(':',\trim($descriptor ?? ''));   
         $result['class'] = \ucfirst($tokens[0]);
 
         $params = $tokens[1] ?? '';
