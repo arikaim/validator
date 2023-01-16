@@ -24,7 +24,7 @@ class Text extends Filter
      */
     public function filterValue($value) 
     {      
-        $result = \filter_var(\trim($value ?? ''),FILTER_SANITIZE_STRING);     
+        $result = \filter_var(\trim($value ?? ''),FILTER_SANITIZE_FULL_SPECIAL_CHARS);     
         
         return ($result == false) ? $value : $result;
     } 

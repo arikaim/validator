@@ -230,15 +230,11 @@ class Validator extends Collection
     public function validateRules(string $fieldName, array $rules): bool
     {
         $value = $this->get($fieldName,null);
-      
         $errors = 0;
+        
         foreach ($rules as $rule) {    
-            $valid = $this->validateRule($rule,$value);
-            if ($valid == false) { 
-                $errorCode = $rule->getError();
-                $params = $rule->getErrorParams();       
-                        
-                $this->addError($fieldName,$errorCode,$params); 
+            if ($this->validateRule($rule,$value) == false) {  
+                $this->addError($fieldName,$rule->getError(),$rule->getErrorParams()); 
                 $errors++;              
             }
         }
