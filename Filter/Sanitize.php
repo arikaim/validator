@@ -25,8 +25,10 @@ class Sanitize extends Filter
      */
     public function filterValue($value) 
     {            
-        $value = Html::removeTags($value,['script','iframe','style','embed','applet']);
-        $value = \htmlspecialchars($value,ENT_HTML5 | ENT_QUOTES);
+        if (\is_string($value) == true) {
+            $value = Html::removeTags($value,['script','iframe','style','embed','applet']);
+            return \htmlspecialchars($value,ENT_HTML5 | ENT_QUOTES);
+        }
        
         return $value;
     } 

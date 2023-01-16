@@ -10,11 +10,12 @@
 namespace Arikaim\Core\Validator\Filter;
 
 use Arikaim\Core\Validator\Filter;
+use Arikaim\Core\Utils\Utils;
 
 /**
- * Trim filter
+ * Slog filter
  */
-class Trim extends Filter
+class Slug extends Filter
 {  
     /**
      * Filter value, return filtered value
@@ -24,13 +25,15 @@ class Trim extends Filter
      */
     public function filterValue($value) 
     {       
+        $separator = $this->params[0] ?? '-';
+
         if (\is_string($value) == true) {
-            return \trim($value);
+            return Utils::slug($value,$separator);
         }
         
         if (\is_array($value) == true) {
             foreach ($value as $key => $item) {
-                $value[$key] = \trim($item);
+                $value[$key] = Utils::slug($item,$separator);
             }
         }
 

@@ -24,7 +24,17 @@ class TrimSpace extends Filter
      */
     public function filterValue($value) 
     {       
-        return (\is_string($value) == true) ? \trim($value) : $value;
+        if (\is_string($value) == true) {
+            return \trim($value);
+        }
+        
+        if (\is_array($value) == true) {
+            foreach ($value as $key => $item) {
+                $value[$key] = \trim($item);
+            }
+        }
+
+        return $value;
     } 
 
     /**

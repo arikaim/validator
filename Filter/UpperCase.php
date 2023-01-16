@@ -24,7 +24,17 @@ class UpperCase extends Filter
      */
     public function filterValue($value) 
     {       
-        return \strtoupper(\trim($value ?? ''));
+        if (\is_string($value) == true) {
+            return \strtoupper(\trim($value));
+        }
+        
+        if (\is_array($value) == true) {
+            foreach ($value as $key => $item) {
+                $value[$key] = \strtoupper(\trim($item));
+            }
+        }
+
+        return $value;
     } 
 
     /**

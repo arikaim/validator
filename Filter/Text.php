@@ -24,9 +24,17 @@ class Text extends Filter
      */
     public function filterValue($value) 
     {      
-        $result = \filter_var(\trim($value ?? ''),FILTER_SANITIZE_FULL_SPECIAL_CHARS);     
+        if (\is_string($value) == true) {
+            return \filter_var(\trim($value),FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+        }
         
-        return ($result == false) ? $value : $result;
+        if (\is_array($value) == true) {
+            foreach ($value as $key => $item) {
+                $value[$key] = \filter_var(\trim($item ?? ''),FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            }
+        }
+      
+        return $value;
     } 
 
     /**

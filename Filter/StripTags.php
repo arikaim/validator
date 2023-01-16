@@ -23,8 +23,17 @@ class StripTags extends Filter
      * @return mixed
      */
     public function filterValue($value) 
-    {            
-        return (\is_string($value) == false) ? $value : \strip_tags($value,$this->params ?? []);           
+    {          
+        if (\is_string($value) == true) {
+            return \strip_tags($value,$this->params ?? []);     
+        }  
+        if (\is_array($value) == true) {
+            foreach ($value as $key => $item) {
+                $value[$key] = \strip_tags($item,$this->params ?? []);
+            }
+        }
+          
+        return $value;
     } 
 
     /**

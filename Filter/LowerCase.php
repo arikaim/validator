@@ -12,9 +12,9 @@ namespace Arikaim\Core\Validator\Filter;
 use Arikaim\Core\Validator\Filter;
 
 /**
- * Trim filter
+ * LowerCase filter
  */
-class Trim extends Filter
+class LowerCase extends Filter
 {  
     /**
      * Filter value, return filtered value
@@ -25,12 +25,12 @@ class Trim extends Filter
     public function filterValue($value) 
     {       
         if (\is_string($value) == true) {
-            return \trim($value);
+            return \strtolower(\trim($value));
         }
         
         if (\is_array($value) == true) {
             foreach ($value as $key => $item) {
-                $value[$key] = \trim($item);
+                $value[$key] = \strtolower(\trim($item));
             }
         }
 
