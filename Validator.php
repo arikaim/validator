@@ -230,6 +230,9 @@ class Validator extends Collection
     public function validateRules(string $fieldName, array $rules): bool
     {
         $value = $this->get($fieldName,null);
+        if (\is_string($value) == true) {
+            $value = \trim($value);
+        }
         $errors = 0;
         foreach ($rules as $rule) {    
             $valid = $this->validateRule($rule,$value);
