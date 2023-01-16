@@ -10,12 +10,11 @@
 namespace Arikaim\Core\Validator\Filter;
 
 use Arikaim\Core\Validator\Filter;
-use Arikaim\Core\Utils\Html;
 
 /**
- * Sanitize filter
+ * Remove html tags filter
  */
-class Sanitize extends Filter
+class StripTags extends Filter
 {  
     /**
      * Filter value, return filtered value
@@ -25,10 +24,7 @@ class Sanitize extends Filter
      */
     public function filterValue($value) 
     {            
-        $value = Html::removeTags($value,['script','iframe','style','embed','applet']);
-        $value = \htmlspecialchars($value,ENT_HTML5 | ENT_QUOTES);
-       
-        return $value;
+        return (\is_string($value) == false) ? $value : \strip_tags($value,$this->params ?? []);           
     } 
 
     /**
