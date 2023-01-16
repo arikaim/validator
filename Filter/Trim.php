@@ -12,9 +12,9 @@ namespace Arikaim\Core\Validator\Filter;
 use Arikaim\Core\Validator\Filter;
 
 /**
- * TrimSpace filter
+ * Trim filter
  */
-class TrimSpace extends Filter
+class Trim extends Filter
 {  
     /**
      * Filter value, return filtered value
