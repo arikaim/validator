@@ -30,7 +30,7 @@ class TrimSpace extends Filter
         
         if (\is_array($value) == true) {
             foreach ($value as $key => $item) {
-                $value[$key] = \trim($item);
+                $value[$key] = \trim($item ?? '');
             }
         }
 

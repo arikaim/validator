@@ -30,7 +30,7 @@ class UpperCase extends Filter
         
         if (\is_array($value) == true) {
             foreach ($value as $key => $item) {
-                $value[$key] = \strtoupper(\trim($item));
+                $value[$key] = \strtoupper(\trim($item ?? ''));
             }
         }
 
