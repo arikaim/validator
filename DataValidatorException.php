@@ -42,9 +42,9 @@ class DataValidatorException extends Exception
      * @param int             $code
      * @param Throwable|null  $previous
      */
-    public function __construct(
-        string $message = '', 
+    public function __construct(       
         array $errors,
+        string $message = '', 
         int $code = 0, 
         ?Throwable $previous = null
     ) 

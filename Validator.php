@@ -295,7 +295,7 @@ class Validator extends Collection
         }                      
         
         if ($throwException == true) {
-            throw new DataValidatorException('Data validation error',$errors ?? $this->getErrors());
+            throw new DataValidatorException($errors ?? $this->getErrors(),'Data validation error');
         }
 
         return false;   
