@@ -418,20 +418,35 @@ class Validator extends Collection
     }
 
     /**
-     * Convert date to timestamp
+     * Get field converted to timestamp
      *
      * @param string       $key
      * @param mixed        $default
      * @param integer|null $baseTimestamp
      * @return integer|null
      */
-    public function toTimestamp(string $key, $default = null, ?int $baseTimestamp = null): ?int
+    public function getTimestamp(string $key, $default = null, ?int $baseTimestamp = null): ?int
     {
         $date = $this->get($key,$default);
         if (empty($date) == true) {
-            return null;
+            return $default;
         }
 
         return (\is_numeric($date) == true) ? $date : \strtotime((string)$date,$baseTimestamp);
+    }
+
+    /**
+     * Convert filed to timestamp
+     *
+     * @param string       $key
+     * @param mixed       $default
+     * @param integer|null $baseTimestamp
+     * @return Self
+     */
+    public function toTimeStamp(string $key, $default = null, ?int $baseTimestamp = null): object
+    {
+        $this->data[$key] = $this->getTimestamp($key,$default,$baseTimestamp);
+
+        return $this;
     }
 }
