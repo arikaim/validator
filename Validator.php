@@ -423,12 +423,15 @@ class Validator extends Collection
      * @param string       $key
      * @param mixed        $default
      * @param integer|null $baseTimestamp
-     * @return integer
+     * @return integer|null
      */
-    public function toTimestamp(string $key, $default = null, ?int $baseTimestamp = null): int
+    public function toTimestamp(string $key, $default = null, ?int $baseTimestamp = null): ?int
     {
         $date = $this->get($key,$default);
-        
+        if (empty($date) == true) {
+            return null;
+        }
+
         return (\is_numeric($date) == true) ? $date : \strtotime((string)$date,$baseTimestamp);
     }
 }
