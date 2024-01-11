@@ -416,4 +416,19 @@ class Validator extends Collection
     {
         return $this->get($key);
     }
+
+    /**
+     * Convert date to timestamp
+     *
+     * @param string       $key
+     * @param mixed        $default
+     * @param integer|null $baseTimestamp
+     * @return integer
+     */
+    public function toTimestamp(string $key, $default = null, ?int $baseTimestamp = null): int
+    {
+        $date = $this->get($key,$default);
+        
+        return (\is_numeric($date) == true) ? $date : \strtotime((string)$date,$baseTimestamp);
+    }
 }
