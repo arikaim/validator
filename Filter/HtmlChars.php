@@ -10,12 +10,11 @@
 namespace Arikaim\Core\Validator\Filter;
 
 use Arikaim\Core\Validator\Filter;
-use Arikaim\Core\Utils\Html;
 
 /**
- * Sanitize filter
+ * HtmlChars filter
  */
-class Sanitize extends Filter
+class HtmlChars extends Filter
 {  
     /**
      * Filter value, return filtered value
@@ -26,29 +25,17 @@ class Sanitize extends Filter
     public function filterValue($value) 
     {            
         if (\is_string($value) == true) {
-           return $this->filterText($value);
+           return \htmlspecialchars($value,ENT_HTML5 | ENT_QUOTES,'UTF-8');
         }
        
         if (\is_array($value) == true) {
             foreach ($value as $key => $item) {
-                $value[$key] = $this->filterText($item);
+                $value[$key] = \htmlspecialchars($item,ENT_HTML5 | ENT_QUOTES,'UTF-8');
             }
         }
 
         return $value;
     } 
-
-    /**
-     * Filter text value
-     *
-     * @param string $text
-     * @return void
-     */
-    protected function filterText(string $text)
-    {
-        $tags = (count($this->params) === 0) ? ['script','iframe','style','embed','applet'] : $this->params;
-        return Html::removeTags($text,$tags);
-    }
 
     /**
      * Return filter type

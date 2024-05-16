@@ -86,6 +86,11 @@ class Validator extends Collection
         $this->filters = [];
         $this->getValidCallback = $getValidCallback;
         $this->getErrorCallback = $getErrorCallback;
+
+        // default filters
+        $this->addFilter('*','HtmlChars');
+        $this->addFilter('*','Sanitize');
+        $this->addFilter('*','Trim');
     }
 
     /**
@@ -124,6 +129,24 @@ class Validator extends Collection
     public function onError(Closure $callback): void
     {
         $this->onErrorCallback = $callback; 
+    }
+
+    /**
+     * Remove filter
+     *
+     * @param string $filterName
+     * @param string|null $fieldName
+     * @return Self
+     */
+    public function removeFilter(string $filterName, ?string $fieldName = null): Self
+    {
+        $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
+
+        if (isset($this->filters[$fieldName][$filterName]) == true) {
+            unset($this->filters[$fieldName][$filterName]);
+        }
+
+        return $this;
     }
 
     /**
@@ -166,34 +189,32 @@ class Validator extends Collection
      * Add filter
      *
      * @param string|null $fieldName
-     * @param Filter|string $filter
+     * @param string $filterName
      * @param array $args
      * @return Validator
      */
-    public function addFilter(?string $fieldName, $filter, array $args = []) 
+    public function addFilter(?string $fieldName, string $filterName, array $args = []) 
     {                   
         $fieldName = (empty($fieldName) == true) ? '*' : $fieldName;
-        if (\is_string($filter) == true) {
-            $filter = Factory::createInstance(Factory::getValidatorFiltersClass($filter),$args);                   
-        }
+        $filter = Factory::createInstance(Factory::getValidatorFiltersClass($filterName),$args);                   
        
         if ($filter instanceof FilterInterface) {
             if (\array_key_exists($fieldName,$this->filters) == false) {
                 $this->filters[$fieldName] = [];
             }    
-            $this->filters[$fieldName][] = $filter;    
+            $this->filters[$fieldName][$filterName] = $filter;    
         }
                                                  
         return $this;
     }
     
     /**
-     * Sanitize form fields values
+     * Apply filters
      *
      * @param array|null $data
      * @return Validator
      */
-    public function doFilter(?array $data = null) 
+    public function applyFilters(?array $data = null) 
     {         
         if (empty($data) == false) {
             $this->data = $data;
@@ -217,7 +238,7 @@ class Validator extends Collection
      */
     public function filterAndValidate(bool $throwException = false): bool
     {
-        return $this->doFilter()->validate($throwException);
+        return $this->applyFilters()->validate($throwException);
     }
 
     /**
@@ -273,8 +294,8 @@ class Validator extends Collection
         $this->errors = [];   
         $this->initCallback();
 
-        // do filters
-        $this->doFilter();
+        // apply filters
+        $this->applyFilters();
 
         foreach ($this->rules as $fieldName => $rules) {  
             $this->validateRules($fieldName,$rules);
@@ -375,12 +396,13 @@ class Validator extends Collection
     /**
      * Return form filters
      *
-     * @param string $fieldName
+     * @param string|null $fieldName
      * @return array
      */
-    public function getFilters($fieldName)
+    public function getFilters(?string $fieldName = null)
     {   
         $all = $this->filters['*'] ?? [];
+        $fieldName = $fieldName ?? '*';
 
         return (isset($this->filters[$fieldName]) == true) ? \array_merge($all,$this->filters[$fieldName]) : $all;          
     }

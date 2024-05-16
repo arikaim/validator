@@ -25,7 +25,7 @@ class Trim extends Filter
     public function filterValue($value) 
     {       
         if (\is_string($value) == true) {
-            return \trim($value);
+            return \trim($value ?? '');
         }
         
         if (\is_array($value) == true) {
