@@ -64,6 +64,6 @@ abstract class Filter implements FilterInterface
           
         $result = \filter_var($value,$type,$options);
         
-        return ($result == false) ? $value : $result;
+        return ($result === false) ? $value : $result;
     }
 }
