@@ -24,9 +24,6 @@ class EmptyToNull extends Filter
      */
     public function filterValue($value) 
     {       
-        echo "filter" ;
-        var_dump((empty($value) == true) ? null : $value);
-
         return (empty($value) == true) ? null : $value;
     } 
 
