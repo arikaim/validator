@@ -25,8 +25,12 @@ class Timestamp extends Filter
      */
     public function filterValue($value) 
     {       
-        return (empty($value) == true) ? 
-            null : 
+        if (empty($value) == true) {
+            return null;
+        }
+        
+        return (\is_integer((int)$value) == true) ? 
+            $value : 
             DateTime::toTimestamp($value,$this->params[0] ?? null);
     } 
 
