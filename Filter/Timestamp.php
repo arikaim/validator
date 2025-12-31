@@ -29,7 +29,7 @@ class Timestamp extends Filter
             return null;
         }
         
-        return (\is_integer((int)$value) == true) ? 
+        return (\is_integer($value) == true) ? 
             $value : 
             DateTime::toTimestamp($value,$this->params[0] ?? null);
     } 

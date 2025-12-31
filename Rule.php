@@ -137,7 +137,7 @@ abstract class Rule implements RuleInterface
         switch ($type) {
             case Self::INTEGER_TYPE: {        
                 if (\is_numeric($value) == true) {                                   
-                    return \is_int((int)$value);
+                    return \is_int($value);
                 }
                 break;
             }
@@ -146,7 +146,7 @@ abstract class Rule implements RuleInterface
             }
             case Self::FLOAT_TYPE: {
                 if (\is_numeric($value) == true) {                  
-                    return \is_float((float)$value);
+                    return \is_float($value);
                 }
                 break;
             }
